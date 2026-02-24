@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Role - Educational Resource Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #006064; 
+            --accent-color: #FF6D00;  
+            --ndl-dark: #111827;      
+            --bg-light: #f0f4f8;      
+            --text-dark: #1f2937;
+            --text-gray: #4b5563;
+            --border-color: #e5e7eb;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.4);
+        }
+
+        body.dark-mode {
+            background-color: var(--ndl-dark);
+            --bg-light: #111827;
+            --text-dark: #f9fafb;
+            --text-gray: #9ca3af;
+            --border-color: #374151;
+            --glass-bg: rgba(31, 41, 55, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        /* --- Background Animations --- */
+        @keyframes float {
+            0% { transform: translateY(0) scale(1) rotate(0deg); }
+            50% { transform: translateY(-30px) scale(1.05) rotate(5deg); }
+            100% { transform: translateY(0) scale(1) rotate(0deg); }
+        }
+        
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            z-index: 0;
+            animation: float 10s infinite ease-in-out;
+        }
+        
+        .shape-1 { width: 600px; height: 600px; background: #FF9D00; top: -200px; left: -200px; }
+        .shape-2 { width: 500px; height: 500px; background: #00E5FF; bottom: -150px; right: -150px; animation-delay: -5s; }
+
+        /* --- Main Container --- */
+        .role-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 800px;
+            padding: 50px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            text-align: center;
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.9) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .header-text h1 {
+            font-size: 36px;
+            color: var(--text-dark);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header-text h1 span { color: var(--accent-color); }
+
+        .header-text p {
+            font-size: 16px;
+            color: var(--text-gray);
+            margin-bottom: 40px;
+        }
+
+        /* --- Role Cards Layout --- */
+        .cards-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .role-card {
+            flex: 1;
+            min-width: 250px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        body.dark-mode .role-card {
+            background: rgba(31, 41, 55, 0.6);
+        }
+
+        /* Hover Effects */
+        .role-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: #fff;
+            border-color: var(--accent-color);
+            box-shadow: 0 15px 30px rgba(255, 109, 0, 0.15);
+        }
+
+        body.dark-mode .role-card:hover {
+            background: #1f2937;
+            box-shadow: 0 15px 30px rgba(0, 229, 255, 0.15);
+            border-color: #00E5FF;
+        }
+
+        /* Specifically style the Admin hover to be Teal/Cyan and User to be Orange */
+        .role-admin:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 15px 30px rgba(0, 96, 100, 0.2);
+        }
+
+        .role-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .role-card:hover .role-icon {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .role-card h2 {
+            font-size: 22px;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .role-card p {
+            font-size: 14px;
+            color: var(--text-gray);
+            line-height: 1.5;
+        }
+
+        /* --- Theme Toggle --- */
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            z-index: 20;
+        }
+
+        .control-btn {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-dark);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Controls -->
+    <div class="controls">
+        <button class="control-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+    </div>
+
+    <!-- Animated Background Shapes -->
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <!-- Role Selection Container -->
+    <div class="role-wrapper" id="main-content">
+        <div class="header-text">
+            <h1>Welcome to NDLI <span>Portal</span></h1>
+            <p>Please select your role to continue to the Educational Resource Library</p>
+        </div>
+
+        <div class="cards-container">
+            
+            <!-- User / Student Card -->
+            <div class="role-card role-user" onclick="selectRole('user')">
+                <div class="role-icon">👨‍🎓</div>
+                <h2>Student / Educator</h2>
+                <p>Search, read, and download educational materials. Provide feedback on resources.</p>
+            </div>
+
+            <!-- Admin Card -->
+            <div class="role-card role-admin" onclick="selectRole('admin')">
+                <div class="role-icon">🛡️</div>
+                <h2>Administrator</h2>
+                <p>Upload new resources, organize library content, and manage user access.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Function to handle role selection
+        function selectRole(roleType) {
+            // We use localStorage to temporarily "remember" what they clicked
+            localStorage.setItem('selectedRole', roleType);
+
+            // Add a tiny delay so the user sees the click effect
+            setTimeout(() => {
+                try {
+                    // This performs the actual redirect.
+                    // It will work perfectly when you run this on your local computer!
+                    window.location.href = "login.html"; 
+                } catch (error) {
+                    // In isolated preview environments (like Canvas), relative navigation sometimes throws an error.
+                    // This catch block replaces the screen with a friendly message instead of crashing.
+                    document.body.innerHTML = `
+                        <div style="height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; z-index: 100; position: relative;">
+                            <div style="font-size: 64px; margin-bottom: 15px; animation: popIn 0.5s;">🔄</div>
+                            <h2 style="font-size: 28px; color: var(--text-dark); margin-bottom: 10px;">Redirecting to Login...</h2>
+                            <p style="font-size: 18px; color: var(--text-gray);">Role Selected: <b style="color: var(--accent-color); text-transform: uppercase;">${roleType}</b></p>
+                            
+                            <div style="margin-top: 30px; max-width: 500px; padding: 20px; background: var(--glass-bg); border-radius: 12px; border: 1px solid var(--border-color);">
+                                <p style="font-size: 14px; color: var(--text-gray); line-height: 1.6;">
+                                    <strong>Note:</strong> Page navigation is disabled in this preview environment to prevent errors.<br><br>
+                                    When you run these files directly from your own computer, it will successfully navigate to <b>login.html</b>!
+                                </p>
+                            </div>
+                            
+                            <button onclick="location.reload()" style="margin-top: 30px; padding: 12px 30px; background: var(--primary-color); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 16px; transition: 0.3s;">
+                                Go Back
+                            </button>
+                        </div>
+                    `;
+                }
+            }, 300);
+        }
+
+        // Dark Mode Toggle
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const themeBtn = document.getElementById('theme-toggle');
+            if(document.body.classList.contains('dark-mode')) {
+                themeBtn.innerHTML = '☀️ Light Mode';
+            } else {
+                themeBtn.innerHTML = '🌙 Dark Mode';
+            }
+        }
+    </script>
+</body>
+</html>
