@@ -1,7 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const SchoolEducation = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
+    const { t } = useLanguage();
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = React.useState('');
 
@@ -72,13 +75,7 @@ const SchoolEducation = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                         <span className="text-sm group-hover:rotate-12 transition-transform">{isDarkMode ? '☀️' : '🌙'}</span>
                         <span className="hidden sm:inline opacity-90 group-hover:opacity-100">{isDarkMode ? 'Light' : 'Dark'} Mode</span>
                     </button>
-                    <button
-                        onClick={() => alert('Language selection module coming soon!')}
-                        className="flex items-center gap-2 opacity-90 hover:opacity-100 hover:text-accent transition-all group p-1"
-                    >
-                        <span className="text-sm group-hover:scale-110 transition-transform">🌐</span>
-                        <span className="hidden sm:inline">Languages</span>
-                    </button>
+                    <LanguageSwitcher isDark={true} />
                 </div>
                 <div className="flex items-center gap-6">
                     <button
@@ -102,9 +99,9 @@ const SchoolEducation = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
             <div className="relative pt-16 pb-8 px-[5%] text-center overflow-hidden bg-gradient-to-b from-[#e0f2f1] to-transparent dark:from-ndl-dark dark:to-transparent">
                 <div className="relative z-10 flex flex-col items-center">
                     {/* Themed Header Badge */}
-                    <div className="inline-block px-14 py-4 bg-white dark:bg-gray-800 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-3xl mb-10 border border-white dark:border-white/10 animate-popIn">
-                        <h1 className="text-4xl font-black text-text-dark tracking-tighter uppercase">
-                            School <span className="text-accent italic">Education</span>
+                    <div className={`inline-block px-14 py-4 ${isDarkMode ? 'bg-gray-800 border-white/10' : 'bg-white border-white'} shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-3xl mb-10 border animate-popIn`}>
+                        <h1 className={`text-4xl font-black tracking-tighter uppercase ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>
+                            {t('school').split(' ')[0]} <span className="text-accent italic">{t('school').split(' ').slice(1).join(' ')}</span>
                         </h1>
                     </div>
 
@@ -114,22 +111,22 @@ const SchoolEducation = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                         <div className="relative bg-white dark:bg-gray-800 border-2 border-transparent focus-within:border-accent shadow-2xl rounded-2xl flex p-1 transition-all duration-500 overflow-hidden">
                             <div className="px-8 flex items-center border-r border-gray-100 dark:border-white/5 bg-gray-50 dark:bg-gray-900/20">
                                 <span className="text-xs font-black uppercase tracking-widest text-[#00695c] dark:text-[#80cbc4] flex items-center gap-3">
-                                    🏫 EduHub
+                                    🏫 {t('eduHub')}
                                 </span>
                             </div>
                             <input
                                 type="text"
-                                placeholder="Search for textbooks, papers, resources..."
+                                placeholder={t('searchPlaceholder')}
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && searchTerm && navigate(`/search?q=${searchTerm}`)}
-                                className="flex-1 bg-transparent px-8 py-5 text-text-dark outline-none font-medium placeholder-text-gray/40"
+                                className={`flex-1 bg-transparent px-8 py-5 outline-none font-medium ${isDarkMode ? 'text-white placeholder-white/30' : 'text-text-dark placeholder-text-gray/40'}`}
                             />
                             <button
                                 onClick={() => searchTerm && navigate(`/search?q=${searchTerm}`)}
                                 className="bg-primary hover:bg-[#004d40] text-white px-10 rounded-xl font-black uppercase tracking-widest text-xs transition-all shadow-lg active:scale-95 shadow-primary/20"
                             >
-                                Search
+                                {t('searchButton')}
                             </button>
                         </div>
                     </div>
@@ -150,12 +147,15 @@ const SchoolEducation = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                             style={{ animationDelay: `${idx * 150}ms` }}
                         >
                             {/* Header */}
-                            <div className="px-10 py-7 border-b border-gray-100 dark:border-white/5 flex items-center justify-between bg-gray-50/50 dark:bg-gray-900/30 group-hover:bg-white dark:group-hover:bg-gray-800 transition-colors duration-500">
-                                <h2 className="text-2xl font-black text-text-dark flex items-center gap-5 tracking-tight uppercase">
+                            <div className={`px-10 py-7 border-b ${isDarkMode ? 'border-white/5 bg-gray-900/30' : 'border-gray-100 bg-gray-50/50'} flex items-center justify-between group-hover:bg-white dark:group-hover:bg-gray-800 transition-colors duration-500`}>
+                                <h2 className={`text-2xl font-black flex items-center gap-5 tracking-tight uppercase ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>
                                     <span className="text-3xl transition-all duration-500 group-hover:scale-150 group-hover:rotate-[15deg] inline-block drop-shadow-md">
                                         {section.icon}
                                     </span>
-                                    {section.title}
+                                    {section.title === 'Subjects' ? t('subjects') :
+                                        section.title === 'Educational Levels' ? t('eduLevels') :
+                                            section.title === 'Contents in Indian Languages' ? t('indianLanguages') :
+                                                section.title === 'State Boards' ? t('stateBoards') : section.title}
                                 </h2>
                                 <div className="w-10 h-10 rounded-2xl bg-accent/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 translate-x-6 group-hover:translate-x-0 rotate-45 group-hover:rotate-0 shadow-lg shadow-accent/20">
                                     <span className="text-accent text-sm font-bold">➔</span>
@@ -186,7 +186,7 @@ const SchoolEducation = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                                 >
                                     <span className="transition-all duration-500 group-hover/btn:scale-150 group-hover/btn:rotate-[20deg]">📚</span>
                                     <span className="relative overflow-hidden inline-block group-hover:italic transition-all">
-                                        Explore More
+                                        {t('exploreMore')}
                                         <span className="absolute bottom-0 left-0 w-full h-0.5 bg-currentColor translate-x-[-105%] group-hover/btn:translate-x-0 transition-transform duration-700"></span>
                                     </span>
                                 </button>

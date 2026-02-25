@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
+import InfiniteCarousel from './InfiniteCarousel';
+
 const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [placeholder, setPlaceholder] = useState('Search for "Machine Learning"');
@@ -87,18 +92,12 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
             <span className="text-sm group-hover:rotate-12 transition-transform">{isDarkMode ? '☀️' : '🌙'}</span>
             <span className="hidden sm:inline opacity-90 group-hover:opacity-100">{isDarkMode ? 'Light' : 'Dark'} Mode</span>
           </button>
-          <button
-            onClick={() => alert('Language selection module coming soon!')}
-            className="flex items-center gap-2 opacity-90 hover:opacity-100 hover:text-accent transition-all group p-1"
-          >
-            <span className="text-sm group-hover:scale-110 transition-transform">🌐</span>
-            <span className="hidden sm:inline">Languages</span>
-          </button>
+          <LanguageSwitcher isDark={true} />
         </div>
         <div className="flex items-center gap-6">
           <Link to="/login" className="flex items-center gap-2 opacity-90 hover:opacity-100 hover:text-accent transition-all group p-1">
             <span className="text-sm group-hover:-translate-y-px transition-transform">👤</span>
-            <span className="hidden sm:inline">{username || 'User Login'}</span>
+            <span className="hidden sm:inline">{username || t('login')}</span>
           </Link>
           <button
             onClick={toggleFullScreen}
@@ -117,21 +116,21 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
             onClick={scrollToExplore}
             className="text-sm font-black tracking-widest uppercase cursor-pointer text-gray-900 dark:text-white hover:text-accent transition-colors"
           >
-            Explore
+            {t('explore')}
           </button>
           <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"></span>
           <button
             onClick={() => navigate('/judicial-resources')}
             className="text-sm font-black tracking-widest uppercase cursor-pointer text-gray-900 dark:text-white hover:text-accent transition-colors"
           >
-            Resources
+            {t('resources')}
           </button>
           <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse delay-75"></span>
           <button
             onClick={() => navigate('/school-education')}
             className="text-sm font-black tracking-widest uppercase cursor-pointer text-gray-900 dark:text-white hover:text-accent transition-colors"
           >
-            Courses
+            {t('courses')}
           </button>
         </nav>
       </header>
@@ -145,44 +144,40 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
 
         <div className="relative z-10 w-full max-w-5xl">
           <h1 className="mb-6 text-5xl font-black leading-tight tracking-tighter md:text-8xl text-text-dark animate-fadeInDown drop-shadow-sm">
-            Digital Library <span className="text-accent underline decoration-primary/20 transition-all hover:decoration-accent/40">of India</span>
+            {t('heroTitlePrimary')} <span className="text-accent underline decoration-primary/20 transition-all hover:decoration-accent/40">{t('heroTitleSecondary')}</span>
           </h1>
           <p className="max-w-2xl mx-auto mb-12 text-lg md:text-2xl text-text-gray font-medium animate-fadeInUp leading-relaxed">
-            A paradigm shift in Indian education, providing universal access to millions of high-quality resources.
+            {t('heroSubtitle')}
           </p>
 
-          <div className="flex flex-col md:flex-row items-stretch w-full max-w-3xl mx-auto overflow-hidden bg-white dark:bg-gray-800 shadow-2xl rounded-2xl animate-popIn border border-border-color dark:border-white/5 group ring-0 focus-within:ring-4 ring-accent/10 transition-all duration-500">
-            <div
-              onClick={() => alert('Language preferences: English (US)')}
-              className="hidden px-8 py-5 font-bold text-text-dark dark:text-white md:flex items-center justify-center bg-gray-50 dark:bg-black/40 min-w-max cursor-pointer hover:bg-gray-100 dark:hover:bg-black transition-colors"
-            >
-              文A English <span className="ml-2 text-[10px] opacity-70">▼</span>
-            </div>
+          <div className="flex flex-col md:flex-row items-stretch w-full max-w-3xl mx-auto bg-white dark:bg-gray-800 shadow-2xl rounded-2xl animate-popIn border border-border-color dark:border-white/5 group ring-0 focus-within:ring-4 ring-accent/10 transition-all duration-500">
             <div className="relative flex-1 flex items-center">
               <span className="absolute left-5 text-xl opacity-30 group-focus-within:opacity-100 transition-opacity">🔍</span>
               <input
                 type="text"
-                placeholder={placeholder}
+                placeholder={t('searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && searchTerm && navigate(`/search?q=${searchTerm}`)}
-                className="w-full px-14 py-5 text-xl outline-none text-text-dark bg-transparent placeholder-text-gray/50"
+                className="w-full px-14 py-5 text-xl outline-none text-white bg-transparent placeholder-white/50"
               />
             </div>
             <button
+              type="button"
               onClick={() => searchTerm && navigate(`/search?q=${searchTerm}`)}
               className="px-10 py-5 font-black text-white transition-all bg-accent hover:bg-orange-600 hover:scale-[1.02] active:scale-95 shadow-lg shadow-accent/20"
             >
-              SEARCH
+              {t('searchButton')}
             </button>
           </div>
 
           <div className="mt-12 flex flex-wrap justify-center gap-4 text-xs font-bold uppercase tracking-widest text-text-gray animate-fadeInUp delay-300">
+            <span className="py-2">{t('popular')}</span>
             <button
               onClick={() => navigate('/search?q=Computer Science')}
               className="px-4 py-2 bg-white/50 dark:bg-white/5 rounded-full border border-border-color hover:bg-accent hover:text-white transition-all active:scale-95"
             >
-              Popular: Computer Science
+              Computer Science
             </button>
             <button
               onClick={() => navigate('/search?q=Law')}
@@ -201,90 +196,59 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
       </section>
 
       {/* Cards Overlay Carousel */}
-      <div className="z-20 w-full px-[5%] -mt-24 mb-24" ref={exploreRef}>
-        <div className="relative flex items-center w-full max-w-[1600px] mx-auto group/carousel">
-          <button
-            className="absolute left-0 z-50 flex items-center justify-center w-14 h-14 bg-white dark:bg-gray-800 text-text-dark rounded-full shadow-2xl border border-border-color dark:border-white/10 cursor-pointer text-xl transition-all hover:scale-110 active:scale-95 opacity-0 group-hover/carousel:opacity-100 translate-x-10 group-hover/carousel:translate-x-[-50%] hidden lg:flex"
-            onClick={() => scrollCarousel('left')}
-          >
-            ❮
-          </button>
-
-          <div className="flex gap-8 py-10 overflow-x-auto scroll-smooth scrollbar-hide w-full" ref={cardsWrapperRef}>
+      <div className="z-20 w-full px-[5%] -mt-10 mb-24" ref={exploreRef}>
+        <div className="relative w-full max-w-[1700px] mx-auto">
+          <InfiniteCarousel speed={1.2} gap={40} className="py-12">
             {categories.map((cat) => (
-              <div key={cat.id} className="min-w-[320px] bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col transition-all duration-500 hover:-translate-y-4 hover:shadow-[0_40px_80px_rgba(0,0,0,0.15)] relative dark:bg-gray-800 border border-transparent dark:border-white/5 overflow-hidden group">
+              <div
+                key={cat.id}
+                onClick={() => {
+                  if (cat.id === 'judicial') navigate('/judicial-resources');
+                  else if (cat.id === 'school') navigate('/school-education');
+                  else if (cat.id === 'research') navigate('/research-resources');
+                  else if (cat.id === 'patents') navigate('/patents');
+                  else if (cat.id === 'higher') navigate('/higher-education');
+                  else if (cat.id === 'career') navigate('/career');
+                  else if (cat.id === 'cultural') navigate('/culture');
+                  else if (cat.id === 'news') navigate('/newspapers');
+                }}
+                className="min-w-[340px] bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col transition-all duration-500 hover:-translate-y-6 hover:shadow-[0_40px_80px_rgba(0,0,0,0.18)] relative dark:bg-gray-800 border border-transparent dark:border-white/5 overflow-hidden group cursor-pointer"
+              >
                 <div
-                  className="h-40 bg-center bg-cover relative flex items-center justify-center transition-transform duration-700 group-hover:scale-110"
+                  className="h-44 bg-center bg-cover relative flex items-center justify-center transition-transform duration-700 group-hover:scale-110"
                   style={{ backgroundImage: `url(${cat.bg})` }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                  <span className="relative z-10 text-xs font-black text-white uppercase tracking-[0.2em] drop-shadow-lg">{cat.name}</span>
+                  <span className="relative z-10 text-xs font-black text-white uppercase tracking-[0.2em] drop-shadow-lg">{t(cat.id)}</span>
                 </div>
 
-                <div className="absolute top-32 left-1/2 -translate-x-1/2 w-20 h-20 bg-white dark:bg-gray-700 rounded-2xl shadow-xl flex items-center justify-center text-4xl z-10 border-4 border-white dark:border-gray-800 transition-all duration-500 group-hover:rotate-12 group-hover:scale-110">
+                <div className="absolute top-36 left-1/2 -translate-x-1/2 w-20 h-20 bg-white dark:bg-gray-700 rounded-2xl shadow-xl flex items-center justify-center text-4xl z-10 border-4 border-white dark:border-gray-800 transition-all duration-500 group-hover:rotate-12 group-hover:scale-110">
                   {cat.icon}
                 </div>
 
                 <div className="flex-1 px-8 pt-16 pb-8 bg-white dark:bg-gray-800">
                   <ul className="space-y-3">
                     {cat.items.map((item, idx) => (
-                      <li key={idx} className="text-sm border-b border-gray-100 dark:border-white/5 last:border-none pb-3 flex items-center justify-between text-text-dark dark:text-gray-300 transition-colors hover:text-accent font-medium group/item">
+                      <li key={idx} className="text-sm border-b border-gray-100 dark:border-white/5 last:border-none pb-3 flex items-center justify-between text-text-dark dark:text-gray-300 transition-colors hover:text-accent font-medium group/item text-left">
                         <div className="flex items-center gap-3">
                           <span className="w-1.5 h-1.5 bg-accent rounded-full"></span> {item}
                         </div>
-                        <button
-                          className="opacity-0 group-hover/item:opacity-100 transition-opacity hover:scale-125"
-                          title="Download Resource"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            alert(`Starting download for: ${item}`);
-                          }}
-                        >
-                          📥
-                        </button>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div
-                  onClick={() => {
-                    if (cat.id === 'judicial') {
-                      navigate('/judicial-resources');
-                    } else if (cat.id === 'school') {
-                      navigate('/school-education');
-                    } else if (cat.id === 'research') {
-                      navigate('/research-resources');
-                    } else if (cat.id === 'patents') {
-                      navigate('/patents-and-standards');
-                    } else if (cat.id === 'higher') {
-                      navigate('/higher-education');
-                    } else if (cat.id === 'career') {
-                      navigate('/career-development');
-                    } else if (cat.id === 'cultural') {
-                      navigate('/cultural-archives');
-                    } else if (cat.id === 'news') {
-                      navigate('/newspaper-archives');
-                    }
-                  }}
-                  className="py-5 text-center text-xs font-black uppercase tracking-widest text-primary hover:text-white bg-gray-50 dark:bg-black/20 hover:bg-primary transition-all cursor-pointer"
-                >
-                  Open Category →
+                <div className="px-8 py-5 border-t border-gray-50 dark:border-white/5 bg-gray-50/50 dark:bg-black/20 flex justify-center group-hover:bg-accent group-hover:text-white transition-all duration-500">
+                  <button className="text-[10px] font-black uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-2 transition-transform">
+                    {t('openCategory') || 'Open Category'} ➔
+                  </button>
                 </div>
               </div>
             ))}
-          </div>
-
-          <button
-            className="absolute right-0 z-50 flex items-center justify-center w-14 h-14 bg-white dark:bg-gray-800 text-text-dark rounded-full shadow-2xl border border-border-color dark:border-white/10 cursor-pointer text-xl transition-all hover:scale-110 active:scale-95 opacity-0 group-hover/carousel:opacity-100 translate-x-[-40px] group-hover/carousel:translate-x-[50%] hidden lg:flex"
-            onClick={() => scrollCarousel('right')}
-          >
-            ❯
-          </button>
+          </InfiniteCarousel>
         </div>
       </div>
 
-      {/* Feedback Section */}
       <section className="py-20 px-[5%] bg-white dark:bg-gray-800/80 border-y border-border-color dark:border-white/5 animate-fadeInUp">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-sm font-black text-accent uppercase tracking-[0.4em] mb-4">Community Engagement</h2>
@@ -305,7 +269,6 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
         </div>
       </section>
 
-      {/* Modern High-Impact Stats */}
       <section className="py-32 px-[5%] bg-ndl-dark relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-30"></div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 max-w-[1400px] mx-auto relative z-10">
@@ -322,13 +285,12 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
         </div>
       </section>
 
-      {/* Professional Footer */}
       <footer className="py-24 px-[5%] bg-black text-white border-t border-white/5">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20">
           <div className="lg:col-span-2">
-            <h2 className="text-4xl font-black mb-8 tracking-tighter">NDLI <span className="text-accent underline decoration-white/10">PORTAL</span></h2>
+            <h2 className="text-4xl font-black mb-8 tracking-tighter">{t('ndliPortal')}</h2>
             <p className="text-gray-500 text-lg leading-relaxed max-w-lg">
-              The National Digital Library of India is a project under Ministry of Education, Government of India. It provides a single window for digital learning resources universally.
+              {t('footerDescription')}
             </p>
             <div className="mt-10 flex gap-6 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 overflow-visible">
               <img src="https://ndl.iitkgp.ac.in/assets/images/Ministry_Of_Education.png" alt="MOE" className="h-16" />
@@ -336,15 +298,15 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
             </div>
           </div>
           <div>
-            <h4 className="text-xs font-black mb-8 uppercase tracking-[0.4em] text-accent">Navigation</h4>
+            <h4 className="text-xs font-black mb-8 uppercase tracking-[0.4em] text-accent">{t('navigation')}</h4>
             <ul className="space-y-4">
-              <li><a className="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm font-bold uppercase tracking-widest">About Project</a></li>
+              <li><a className="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm font-bold uppercase tracking-widest">{t('explore')}</a></li>
               <li><a className="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm font-bold uppercase tracking-widest">Help Center</a></li>
               <li><a className="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm font-bold uppercase tracking-widest">Partner List</a></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-xs font-black mb-8 uppercase tracking-[0.4em] text-accent">Commitment</h4>
+            <h4 className="text-xs font-black mb-8 uppercase tracking-[0.4em] text-accent">{t('commitment')}</h4>
             <ul className="space-y-4">
               <li><a className="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm font-bold uppercase tracking-widest">Privacy Shield</a></li>
               <li><a className="text-gray-400 hover:text-white transition-colors cursor-pointer text-sm font-bold uppercase tracking-widest">Data Policy</a></li>
@@ -354,7 +316,7 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
         </div>
         <div className="mt-32 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-gray-600 font-bold uppercase tracking-widest text-[10px]">
-            &copy; 2026 National Digital Library of India. Engineered for Excellence.
+            {t('copyright')}
           </div>
           <div className="flex gap-8 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
             <span className="cursor-pointer hover:text-accent transition-colors">Facebook</span>

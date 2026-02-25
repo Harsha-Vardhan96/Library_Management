@@ -88,8 +88,8 @@ const HigherEducation = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
             <div className="relative pt-20 pb-12 px-[5%] text-center overflow-hidden bg-gradient-to-b from-[#f3e5f5] to-transparent dark:from-ndl-dark dark:to-transparent">
                 <div className="relative z-10 flex flex-col items-center">
                     {/* Themed Header Badge */}
-                    <div className="inline-block px-14 py-4 bg-white dark:bg-gray-800 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-3xl mb-10 border border-white dark:border-white/10 animate-popIn">
-                        <h1 className="text-4xl font-black text-text-dark tracking-tighter uppercase">
+                    <div className={`inline-block px-14 py-4 ${isDarkMode ? 'bg-gray-800 border-white/10' : 'bg-white border-white'} shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-3xl mb-10 border animate-popIn`}>
+                        <h1 className={`text-4xl font-black tracking-tighter uppercase ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>
                             Higher <span className="text-accent underline decoration-primary/20 transition-all">Education</span>
                         </h1>
                     </div>
@@ -109,7 +109,7 @@ const HigherEducation = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && searchTerm && navigate(`/search?q=${searchTerm}`)}
-                                className="flex-1 bg-transparent px-8 py-5 text-text-dark outline-none font-semibold placeholder-text-gray/30 text-lg"
+                                className={`flex-1 bg-transparent px-8 py-5 outline-none font-semibold ${isDarkMode ? 'text-white placeholder-white/30' : 'text-text-dark placeholder-text-gray/50'} text-lg`}
                             />
                             <button
                                 onClick={() => searchTerm && navigate(`/search?q=${searchTerm}`)}
@@ -118,7 +118,7 @@ const HigherEducation = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                                 Search
                             </button>
                         </div>
-                        <div className="mt-4 flex justify-center gap-6 text-[10px] font-black uppercase tracking-widest text-text-gray/60">
+                        <div className={`mt-4 flex justify-center gap-6 text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'text-gray-400' : 'text-text-gray/80'}`}>
                             <span
                                 onClick={() => alert('Opening Global University Rankings...')}
                                 className="cursor-pointer hover:text-accent transition-colors"
@@ -158,8 +158,8 @@ const HigherEducation = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                             style={{ animationDelay: `${idx * 200}ms` }}
                         >
                             {/* Header */}
-                            <div className="px-12 py-8 border-b border-gray-100 dark:border-white/5 flex items-center justify-between bg-gray-50/50 dark:bg-gray-900/40 group-hover:bg-white dark:group-hover:bg-gray-800 transition-colors duration-500">
-                                <h2 className="text-2xl font-black text-text-dark flex items-center gap-6 tracking-tight uppercase">
+                            <div className={`px-12 py-8 border-b ${isDarkMode ? 'border-white/5 bg-gray-900/40' : 'border-gray-100 bg-gray-50/50'} flex items-center justify-between group-hover:bg-white dark:group-hover:bg-gray-800 transition-colors duration-500`}>
+                                <h2 className={`text-2xl font-black flex items-center gap-6 tracking-tight uppercase ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>
                                     <span className="text-4xl transition-all duration-700 group-hover:scale-150 group-hover:rotate-[20deg] group-hover:drop-shadow-xl inline-block">
                                         {section.icon}
                                     </span>

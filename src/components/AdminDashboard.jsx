@@ -24,7 +24,7 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
                     <h2 className="text-xs font-black text-accent uppercase tracking-[0.4em] mb-3">System Overview</h2>
-                    <h1 className="text-4xl md:text-5xl font-black text-text-dark tracking-tighter">
+                    <h1 className={`text-4xl md:text-5xl font-black tracking-tighter ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>
                         Welcome Back, <span className="italic">{username || 'Administrator'}</span>
                     </h1>
                 </div>
@@ -39,25 +39,24 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fadeInUp">
                 {stats.map((stat, idx) => (
-                    <div key={idx} className="bg-white dark:bg-gray-800/80 p-8 rounded-[2.5rem] shadow-[0_15px_45px_rgba(0,0,0,0.03)] border border-white dark:border-white/5 group hover:-translate-y-2 transition-all duration-500">
+                    <div key={idx} className={`${isDarkMode ? 'bg-gray-800/80 border-white/5' : 'bg-white border-border-color'} p-8 rounded-[2.5rem] shadow-[0_15px_45px_rgba(0,0,0,0.03)] border group hover:-translate-y-2 transition-all duration-500`}>
                         <div className={`w-14 h-14 ${stat.color} rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-lg shadow-black/5 group-hover:rotate-12 transition-transform`}>
                             {stat.icon}
                         </div>
-                        <p className="text-xs font-black text-text-gray uppercase tracking-widest mb-1">{stat.label}</p>
-                        <h3 className="text-3xl font-black text-text-dark tracking-tighter">{stat.value}</h3>
+                        <p className={`text-xs font-black uppercase tracking-widest mb-1 ${isDarkMode ? 'text-gray-400' : 'text-text-gray/80'}`}>{stat.label}</p>
+                        <h3 className={`text-3xl font-black tracking-tighter ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>{stat.value}</h3>
                     </div>
                 ))}
             </div>
 
             {/* Two Column Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Recent Activities */}
-                <div className="lg:col-span-2 bg-white dark:bg-gray-800/80 p-10 rounded-[3rem] shadow-[0_15px_45px_rgba(0,0,0,0.03)] border border-white dark:border-white/5">
+                <div className={`lg:col-span-2 ${isDarkMode ? 'bg-gray-800/80 border-white/5' : 'bg-white border-border-color'} p-10 rounded-[3rem] shadow-[0_15px_45px_rgba(0,0,0,0.03)] border`}>
                     <div className="flex items-center justify-between mb-10">
-                        <h3 className="text-xl font-black text-text-dark tracking-tight">Recent Content Submissions</h3>
+                        <h3 className={`text-xl font-black tracking-tight ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>Recent Content Submissions</h3>
                         <button
                             onClick={() => setActiveTab('resources')}
-                            className="text-xs font-bold text-primary hover:text-accent transition-colors uppercase tracking-widest"
+                            className="text-xs font-bold text-primary dark:text-accent transition-colors uppercase tracking-widest"
                         >
                             View All
                         </button>
@@ -70,8 +69,8 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
                                         {upload.category === 'Judicial' ? '⚖️' : upload.category === 'Research' ? '🔬' : '🏫'}
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-text-dark group-hover:text-accent transition-colors">{upload.title}</h4>
-                                        <p className="text-xs text-text-gray font-medium">{upload.category} • {upload.date}</p>
+                                        <h4 className={`font-bold transition-colors ${isDarkMode ? 'text-white group-hover:text-accent' : 'text-text-dark group-hover:text-primary'}`}>{upload.title}</h4>
+                                        <p className={`text-xs font-medium ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>{upload.category} • {upload.date}</p>
                                     </div>
                                 </div>
                                 <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${upload.status === 'Published' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'}`}>
@@ -83,13 +82,13 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
                 </div>
 
                 {/* Quick Access */}
-                <div className="bg-ndl-dark dark:bg-gray-900/40 p-10 rounded-[3rem] text-white flex flex-col justify-between group overflow-hidden relative shadow-2xl">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-accent opacity-10 rounded-full blur-3xl -translate-y-16 translate-x-16"></div>
+                <div className={`${isDarkMode ? 'bg-gray-900/40' : 'bg-primary'} p-10 rounded-[3rem] text-white flex flex-col justify-between group overflow-hidden relative shadow-2xl`}>
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-accent opacity-20 rounded-full blur-3xl -translate-y-16 translate-x-16"></div>
                     <div className="relative z-10">
                         <h3 className="text-xl font-black mb-6 tracking-tight">Access Control</h3>
-                        <p className="text-sm text-white/60 mb-8 leading-relaxed">Instantly manage user roles or suspend accounts from the centralized directory.</p>
+                        <p className="text-sm text-white/80 mb-8 leading-relaxed">Instantly manage user roles or suspend accounts from the centralized directory.</p>
                         <div className="space-y-3">
-                            <button className="w-full py-4 bg-white/10 hover:bg-white text-white hover:text-ndl-dark font-black uppercase tracking-widest text-[10px] rounded-2xl transition-all border border-white/5 hover:border-white" onClick={() => setActiveTab('users')}>
+                            <button className={`w-full py-4 bg-white/10 hover:bg-white text-white ${isDarkMode ? 'hover:text-ndl-dark' : 'hover:text-primary'} font-black uppercase tracking-widest text-[10px] rounded-2xl transition-all border border-white/5 hover:border-white`} onClick={() => setActiveTab('users')}>
                                 Member Directory
                             </button>
                             <button
@@ -100,7 +99,7 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
                             </button>
                         </div>
                     </div>
-                    <div className="mt-12 pt-12 border-t border-white/10 text-[10px] font-black uppercase tracking-[0.3em] opacity-40">
+                    <div className="mt-12 pt-12 border-t border-white/10 text-[10px] font-black uppercase tracking-[0.3em] opacity-60">
                         NDLI Security Protocol v4.2
                     </div>
                 </div>
@@ -112,10 +111,10 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
         <div className="max-w-6xl mx-auto space-y-12 animate-fadeIn">
             <div>
                 <h2 className="text-xs font-black text-accent uppercase tracking-[0.4em] mb-3">Resource Management</h2>
-                <h1 className="text-4xl font-black text-text-dark tracking-tighter">Resources <span className="italic">Hub</span></h1>
+                <h1 className={`text-4xl font-black tracking-tighter ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>Resources <span className="italic">Hub</span></h1>
             </div>
-            <div className="bg-white dark:bg-gray-800/80 rounded-[3rem] shadow-xl border border-white dark:border-white/5 overflow-hidden">
-                <div className="p-10 border-b border-border-color dark:border-white/5 flex flex-wrap gap-6 justify-between items-center bg-gray-50/50 dark:bg-black/10">
+            <div className={`${isDarkMode ? 'bg-gray-800/80 border-white/5' : 'bg-white border-border-color'} rounded-[3rem] shadow-xl border overflow-hidden`}>
+                <div className={`p-10 border-b flex flex-wrap gap-6 justify-between items-center ${isDarkMode ? 'bg-black/10 border-white/5' : 'bg-gray-50/50 border-border-color'}`}>
                     <div className="relative flex-1 min-w-[300px]">
                         <span className="absolute left-5 top-1/2 -translate-y-1/2 opacity-30">🔍</span>
                         <input type="text" placeholder="Search resources..." className="w-full pl-14 pr-6 py-4 bg-white dark:bg-gray-700 border border-border-color dark:border-white/10 rounded-2xl outline-none focus:border-accent transition-all" />
@@ -138,18 +137,18 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
                         <thead>
-                            <tr className="bg-gray-50/50 dark:bg-black/20">
-                                <th className="px-10 py-6 text-xs font-black uppercase tracking-widest text-text-gray">Resource Title</th>
-                                <th className="px-10 py-6 text-xs font-black uppercase tracking-widest text-text-gray">Category</th>
-                                <th className="px-10 py-6 text-xs font-black uppercase tracking-widest text-text-gray">Status</th>
-                                <th className="px-10 py-6 text-xs font-black uppercase tracking-widest text-text-gray text-right">Actions</th>
+                            <tr className={`${isDarkMode ? 'bg-black/20' : 'bg-gray-100/50'}`}>
+                                <th className={`px-10 py-6 text-xs font-black uppercase tracking-widest ${isDarkMode ? 'text-gray-400' : 'text-text-dark/70'}`}>Resource Title</th>
+                                <th className={`px-10 py-6 text-xs font-black uppercase tracking-widest ${isDarkMode ? 'text-gray-400' : 'text-text-dark/70'}`}>Category</th>
+                                <th className={`px-10 py-6 text-xs font-black uppercase tracking-widest ${isDarkMode ? 'text-gray-400' : 'text-text-dark/70'}`}>Status</th>
+                                <th className={`px-10 py-6 text-xs font-black uppercase tracking-widest ${isDarkMode ? 'text-gray-400' : 'text-text-dark/70'} text-right`}>Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border-color dark:divide-white/5">
                             {[1, 2, 3, 4, 5].map(i => (
                                 <tr key={i} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group">
-                                    <td className="px-10 py-8 font-bold text-text-dark group-hover:text-accent transition-colors">Digital Archive Vol {100 + i}</td>
-                                    <td className="px-10 py-8 text-sm text-text-gray">Educational</td>
+                                    <td className={`px-10 py-8 font-bold transition-colors ${isDarkMode ? 'text-white group-hover:text-accent' : 'text-text-dark group-hover:text-primary'}`}>Digital Archive Vol {100 + i}</td>
+                                    <td className={`px-10 py-8 text-sm ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>Educational</td>
                                     <td className="px-10 py-8">
                                         <span className="px-4 py-1.5 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded-full text-[10px] font-black uppercase tracking-widest">Published</span>
                                     </td>
@@ -184,7 +183,7 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
         <div className="max-w-6xl mx-auto space-y-12 animate-fadeIn">
             <div>
                 <h2 className="text-xs font-black text-accent uppercase tracking-[0.4em] mb-3">Community Control</h2>
-                <h1 className="text-4xl font-black text-text-dark tracking-tighter">User <span className="italic">Directory</span></h1>
+                <h1 className={`text-4xl font-black tracking-tighter ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>User <span className="italic">Directory</span></h1>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {[
@@ -195,11 +194,11 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
                     { name: 'Elena Gilbert', role: 'Librarian', color: 'bg-pink-500' },
                     { name: 'Damon Salvatore', role: 'Student Delegate', color: 'bg-teal-500' }
                 ].map((user, idx) => (
-                    <div key={idx} className="bg-white dark:bg-gray-800/80 p-10 rounded-[3rem] shadow-xl border border-white dark:border-white/5 flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-500">
+                    <div key={idx} className={`${isDarkMode ? 'bg-gray-800/80 border-white/5' : 'bg-white border-border-color'} p-10 rounded-[3rem] shadow-xl border flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-500`}>
                         <div className={`w-24 h-24 ${user.color} rounded-full flex items-center justify-center text-4xl text-white mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
                             {user.name.charAt(0)}
                         </div>
-                        <h3 className="text-xl font-black text-text-dark mb-2 tracking-tight">{user.name}</h3>
+                        <h3 className={`text-xl font-black mb-2 tracking-tight ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>{user.name}</h3>
                         <p className="text-xs font-black text-accent uppercase tracking-widest mb-8">{user.role}</p>
                         <div className="flex gap-3 w-full">
                             <button
@@ -220,7 +219,8 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
                             </button>
                         </div>
                     </div>
-                ))}
+                ))
+                }
             </div>
         </div>
     );
@@ -229,24 +229,24 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
         <div className="max-w-6xl mx-auto space-y-12 animate-fadeIn">
             <div>
                 <h2 className="text-xs font-black text-accent uppercase tracking-[0.4em] mb-3">Platform Performance</h2>
-                <h1 className="text-4xl font-black text-text-dark tracking-tighter">System <span className="italic">Analytics</span></h1>
+                <h1 className={`text-4xl font-black tracking-tighter ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>System <span className="italic">Analytics</span></h1>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-white dark:bg-gray-800/80 p-10 rounded-[3rem] shadow-xl border border-white dark:border-white/5">
-                    <h3 className="text-xl font-black text-text-dark mb-10 tracking-tight">Growth Projection</h3>
+                <div className={`${isDarkMode ? 'bg-gray-800/80 border-white/5' : 'bg-white border-border-color'} p-10 rounded-[3rem] shadow-xl border`}>
+                    <h3 className={`text-xl font-black mb-10 tracking-tight ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>Growth Projection</h3>
                     <div className="flex items-end gap-4 h-64 px-4 overflow-hidden">
                         {[40, 60, 45, 90, 75, 100, 85].map((h, i) => (
                             <div key={i} className="flex-1 flex flex-col justify-end items-center gap-4">
                                 <div style={{ height: `${h}%` }} className="w-full bg-accent rounded-t-xl relative group">
                                     <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-ndl-dark text-white px-3 py-1 rounded-lg text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">{h}% Increase</div>
                                 </div>
-                                <span className="text-[10px] font-black text-text-gray uppercase">M {i + 1}</span>
+                                <span className={`text-[10px] font-black uppercase ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>M {i + 1}</span>
                             </div>
                         ))}
                     </div>
                 </div>
-                <div className="bg-ndl-dark dark:bg-gray-900/40 p-10 rounded-[3rem] text-white shadow-2xl relative overflow-hidden">
-                    <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-accent/10 rounded-full blur-3xl"></div>
+                <div className={`${isDarkMode ? 'bg-gray-900/40' : 'bg-primary'} p-10 rounded-[3rem] text-white shadow-2xl relative overflow-hidden`}>
+                    <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-accent/20 rounded-full blur-3xl"></div>
                     <h3 className="text-xl font-black mb-10 tracking-tight">Real-time Metrics</h3>
                     <div className="space-y-8 relative z-10">
                         {[
@@ -275,21 +275,21 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
         <div className="max-w-6xl mx-auto space-y-12 animate-fadeIn">
             <div>
                 <h2 className="text-xs font-black text-accent uppercase tracking-[0.4em] mb-3">Console Configuration</h2>
-                <h1 className="text-4xl font-black text-text-dark tracking-tighter">Portal <span className="italic">Settings</span></h1>
+                <h1 className={`text-4xl font-black tracking-tighter ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>Portal <span className="italic">Settings</span></h1>
             </div>
             <div className="bg-white dark:bg-gray-800/80 p-12 rounded-[3.5rem] shadow-xl border border-white dark:border-white/5">
                 <form className="space-y-12">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                         <div className="space-y-4">
-                            <label className="block text-xs font-black uppercase tracking-widest text-text-gray px-1">Admin Display Name</label>
-                            <input type="text" placeholder={username || 'Administrator'} className="w-full px-6 py-4 bg-gray-50 dark:bg-black/20 border border-border-color dark:border-white/5 rounded-2xl outline-none focus:border-accent transition-all text-text-dark" />
+                            <label className={`block text-xs font-black uppercase tracking-widest px-1 ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>Admin Display Name</label>
+                            <input type="text" placeholder={username || 'Administrator'} className="w-full px-6 py-4 bg-gray-50 dark:bg-black/20 border border-border-color dark:border-white/5 rounded-2xl outline-none focus:border-accent transition-all text-text-dark dark:text-white placeholder:text-text-gray/50" />
                         </div>
                         <div className="space-y-4">
-                            <label className="block text-xs font-black uppercase tracking-widest text-text-gray px-1">Institutional Email</label>
-                            <input type="email" placeholder="admin@ndli.gov.in" className="w-full px-6 py-4 bg-gray-50 dark:bg-black/20 border border-border-color dark:border-white/5 rounded-2xl outline-none focus:border-accent transition-all text-text-dark" />
+                            <label className={`block text-xs font-black uppercase tracking-widest px-1 ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>Institutional Email</label>
+                            <input type="email" placeholder="admin@ndli.gov.in" className="w-full px-6 py-4 bg-gray-50 dark:bg-black/20 border border-border-color dark:border-white/5 rounded-2xl outline-none focus:border-accent transition-all text-text-dark dark:text-white placeholder:text-text-gray/50" />
                         </div>
                         <div className="space-y-4">
-                            <label className="block text-xs font-black uppercase tracking-widest text-text-gray px-1">Console Theme</label>
+                            <label className={`block text-xs font-black uppercase tracking-widest px-1 ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>Console Theme</label>
                             <div className="flex gap-4">
                                 <button type="button" onClick={toggleTheme} className={`flex-1 py-4 border rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${!isDarkMode ? 'bg-accent text-white border-accent shadow-lg shadow-accent/20' : 'bg-gray-50 dark:bg-black/20 text-text-gray border-border-color dark:border-white/5'}`}>Light Dynamic</button>
                                 <button type="button" onClick={toggleTheme} className={`flex-1 py-4 border rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${isDarkMode ? 'bg-accent text-white border-accent shadow-lg shadow-accent/20' : 'bg-gray-50 dark:bg-black/20 text-text-gray border-border-color dark:border-white/5'}`}>Dark Obsidian</button>
@@ -300,10 +300,10 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
                             <label className="flex items-center gap-4 cursor-pointer">
                                 <div className="relative">
                                     <input type="checkbox" className="sr-only peer" defaultChecked />
-                                    <div className="w-14 h-8 bg-gray-200 dark:bg-black/40 rounded-full peer peer-checked:bg-accent transition-all"></div>
+                                    <div className={`w-14 h-8 rounded-full peer peer-checked:bg-accent transition-all ${isDarkMode ? 'bg-black/40' : 'bg-gray-200'}`}></div>
                                     <div className="absolute left-1 top-1 w-6 h-6 bg-white rounded-full transition-all peer-checked:translate-x-6"></div>
                                 </div>
-                                <span className="text-sm font-bold text-text-gray">Critical System Alerts</span>
+                                <span className={`text-sm font-bold ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>Critical System Alerts</span>
                             </label>
                         </div>
                     </div>
@@ -321,7 +321,7 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
                         <button
                             type="button"
                             onClick={() => setActiveTab('overview')}
-                            className="px-12 py-5 bg-gray-50 dark:bg-black/20 text-text-dark rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-gray-100 dark:hover:bg-white/5 transition-all"
+                            className="px-12 py-5 bg-gray-50 dark:bg-black/20 text-text-dark dark:text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-gray-100 dark:hover:bg-white/5 transition-all"
                         >
                             Cancel
                         </button>
@@ -332,30 +332,31 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
     );
 
     return (
-        <div className="flex flex-col w-full min-h-screen bg-[#f8fafc] dark:bg-ndl-dark transition-colors duration-500">
+        <div className={`flex flex-col w-full min-h-screen transition-colors duration-500 ${isDarkMode ? 'bg-ndl-dark' : 'bg-white'}`}>
             {/* Top Utility Bar */}
-            <div className="z-[1050] bg-ndl-dark text-white flex justify-between px-[5%] py-3 text-xs font-bold tracking-widest uppercase sticky top-0 border-b border-white/5 backdrop-blur-md shadow-xl">
+            <div className={`z-[1050] flex justify-between px-[5%] py-4 text-xs font-bold tracking-widest uppercase sticky top-0 border-b backdrop-blur-md shadow-sm transition-all duration-300 ${isDarkMode ? 'bg-ndl-dark/80 text-white border-white/5' : 'bg-white/80 text-text-dark border-border-color/50'}`}>
                 <div className="flex items-center gap-8">
                     <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate('/dashboard')}>
                         <span className="text-xl group-hover:scale-125 transition-transform">🛡️</span>
-                        <span className="tracking-[0.3em]">Admin <span className="text-accent">Console</span></span>
+                        <span className="tracking-[0.3em] font-black">Admin <span className="text-accent">Console</span></span>
                     </div>
-                    <div className="h-4 w-px bg-white/10 hidden sm:block"></div>
+                    <div className={`h-4 w-px hidden sm:block ${isDarkMode ? 'bg-white/10' : 'bg-border-color'}`}></div>
                     <button
                         onClick={toggleTheme}
-                        className="hidden sm:flex items-center gap-2 hover:text-accent transition-colors"
+                        className="hidden sm:flex items-center gap-2 hover:text-accent transition-all active:scale-95 p-2 rounded-lg bg-gray-50/50 dark:bg-white/5"
                     >
-                        <span>{isDarkMode ? '☀️' : '🌙'}</span> {isDarkMode ? 'Light' : 'Dark'} Mode
+                        <span className="text-lg">{isDarkMode ? '☀️' : '🌙'}</span>
+                        <span>{isDarkMode ? 'Switch to Light' : 'Switch to Dark'}</span>
                     </button>
                 </div>
                 <div className="flex items-center gap-6">
-                    <div className="flex items-center gap-3 px-4 py-1.5 bg-white/5 rounded-full border border-white/10 group hover:border-accent transition-all">
+                    <div className={`flex items-center gap-3 px-4 py-1.5 rounded-full border group hover:border-accent transition-all ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-border-color'}`}>
                         <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                        <span className="text-[10px] opacity-80 group-hover:opacity-100">{username || 'Super Admin'}</span>
+                        <span className={`text-[10px] opacity-80 group-hover:opacity-100 ${isDarkMode ? 'text-white' : 'text-text-dark'}`}>{username || 'Super Admin'}</span>
                     </div>
                     <button
                         onClick={() => navigate('/login')}
-                        className="flex items-center gap-2 hover:text-accent transition-colors"
+                        className={`flex items-center gap-2 hover:text-accent transition-colors font-black ${isDarkMode ? 'text-white' : 'text-text-dark'}`}
                     >
                         Logout 🚪
                     </button>
@@ -364,8 +365,8 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
 
             <div className="flex flex-1 overflow-hidden">
                 {/* Sidebar */}
-                <aside className="w-72 bg-white dark:bg-gray-800/50 border-r border-border-color dark:border-white/5 hidden lg:flex flex-col p-8 space-y-2">
-                    <p className="text-[10px] font-black text-text-gray uppercase tracking-[0.3em] mb-6 px-4">Management</p>
+                <aside className={`w-72 border-r hidden lg:flex flex-col p-8 space-y-2 transition-all duration-300 ${isDarkMode ? 'bg-gray-800/50 border-white/5' : 'bg-white border-border-color'}`}>
+                    <p className="text-[10px] font-black text-text-gray dark:text-gray-400 uppercase tracking-[0.3em] mb-6 px-4">Management</p>
                     {[
                         { id: 'overview', name: 'Dashboard Home', icon: '📊' },
                         { id: 'resources', name: 'Resources Hub', icon: '📂' },
@@ -378,9 +379,9 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
                             onClick={() => setActiveTab(item.id)}
                             className={`flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold transition-all duration-300 ${activeTab === item.id
                                 ? 'bg-accent text-white shadow-lg shadow-accent/20 translate-x-2'
-                                : 'text-text-gray hover:bg-gray-50 dark:hover:bg-white/5 hover:text-text-dark'}`}
+                                : `${isDarkMode ? 'text-gray-400 hover:bg-white/5 hover:text-white' : 'text-text-gray hover:bg-gray-50 hover:text-text-dark'}`}`}
                         >
-                            <span className="text-xl">{item.icon}</span>
+                            <span className={`text-xl transition-opacity ${activeTab === item.id ? 'opacity-100' : 'opacity-80 group-hover:opacity-100'}`}>{item.icon}</span>
                             {item.name}
                         </button>
                     ))}

@@ -95,8 +95,8 @@ const JudicialResources = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
             {/* Hero / Header Section */}
             <div className="relative pt-12 pb-6 px-[5%] text-center overflow-hidden bg-gradient-to-b from-[#e8ece5] to-transparent dark:from-ndl-dark dark:to-transparent">
                 <div className="relative z-10 flex flex-col items-center">
-                    <div className="inline-block px-12 py-3 bg-white dark:bg-gray-800 shadow-xl rounded-full mb-8 border border-border-color dark:border-white/10 animate-popIn">
-                        <h1 className="text-3xl font-black text-text-dark tracking-tighter">
+                    <div className={`inline-block px-12 py-3 ${isDarkMode ? 'bg-gray-800 border-white/10' : 'bg-white border-border-color'} shadow-xl rounded-full mb-8 border animate-popIn`}>
+                        <h1 className={`text-3xl font-black tracking-tighter ${isDarkMode ? 'text-white' : 'text-text-dark'}`}>
                             Judicial <span className="text-accent underline decoration-primary/20">Resources</span>
                         </h1>
                     </div>
@@ -120,7 +120,7 @@ const JudicialResources = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                                         navigate(`/search?q=${searchTerm}`);
                                     }
                                 }}
-                                className="flex-1 bg-transparent px-8 py-5 text-text-dark outline-none font-semibold placeholder-text-gray/30 text-lg"
+                                className={`flex-1 bg-transparent px-8 py-5 outline-none font-semibold ${isDarkMode ? 'text-white placeholder-white/30' : 'text-text-dark placeholder-text-gray/50'} text-lg`}
                             />
                             <button
                                 onClick={() => {
@@ -144,8 +144,8 @@ const JudicialResources = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                             className="group bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-border-color dark:border-white/5 flex flex-col overflow-hidden animate-fadeInUp transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_40px_80px_rgba(0,0,0,0.12)] hover:border-accent/30"
                             style={{ animationDelay: `${idx * 150}ms` }}
                         >
-                            <div className="px-8 py-6 border-b border-gray-100 dark:border-white/5 flex items-center justify-between bg-gray-50/50 dark:bg-gray-900/20 group-hover:bg-white dark:group-hover:bg-gray-800 transition-colors duration-500">
-                                <h2 className="text-xl font-black text-text-dark flex items-center gap-4 tracking-tight">
+                            <div className={`px-8 py-6 border-b ${isDarkMode ? 'border-white/5 bg-gray-900/20' : 'border-gray-100 bg-gray-50/50'} flex items-center justify-between group-hover:bg-white dark:group-hover:bg-gray-800 transition-colors duration-500`}>
+                                <h2 className={`text-xl font-black flex items-center gap-4 tracking-tight ${isDarkMode ? 'text-white' : 'text-text-dark'}`}>
                                     <span className="text-2xl transition-all duration-500 group-hover:scale-125 group-hover:rotate-12 inline-block drop-shadow-sm">
                                         {section.icon}
                                     </span>
