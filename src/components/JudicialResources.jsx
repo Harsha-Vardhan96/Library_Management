@@ -161,11 +161,22 @@ const JudicialResources = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                                     {section.items.map((item, itemIdx) => (
                                         <div
                                             key={itemIdx}
-                                            onClick={() => alert(`Opening resource: ${item}`)}
-                                            className="group/item flex items-center gap-3 text-sm text-text-gray/80 dark:text-gray-400 hover:text-accent font-semibold cursor-pointer transition-all duration-300 hover:translate-x-1"
+                                            className="group/item flex items-center justify-between text-sm text-text-gray/80 dark:text-gray-400 font-semibold transition-all duration-300 hover:translate-x-1"
                                         >
-                                            <span className="text-[10px] opacity-20 group-hover/item:opacity-100 group-hover/item:scale-150 transition-all duration-300 text-accent">▶</span>
-                                            <span className="truncate border-b border-transparent group-hover/item:border-accent/20 pb-0.5">{item}</span>
+                                            <div
+                                                className="flex items-center gap-3 cursor-pointer hover:text-accent"
+                                                onClick={() => alert(`Opening resource: ${item}`)}
+                                            >
+                                                <span className="text-[10px] opacity-20 group-hover/item:opacity-100 group-hover/item:scale-150 transition-all duration-300 text-accent">▶</span>
+                                                <span className="truncate border-b border-transparent group-hover/item:border-accent/20 pb-0.5">{item}</span>
+                                            </div>
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); alert(`Downloading: ${item}`); }}
+                                                className="opacity-0 group-hover/item:opacity-100 transition-opacity p-1.5 hover:bg-accent/10 rounded-lg text-accent"
+                                                title="Download Resource"
+                                            >
+                                                📥
+                                            </button>
                                         </div>
                                     ))}
                                 </div>

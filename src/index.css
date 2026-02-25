@@ -2,7 +2,7 @@
 
 @theme {
   --color-primary: #006064;
-  --color-accent: #FF6D00;
+  --color-accent: var(--accent-color, #FF6D00);
   --color-ndl-dark: #111827;
   --color-bg-light: var(--bg-light);
   --color-text-dark: var(--text-dark);

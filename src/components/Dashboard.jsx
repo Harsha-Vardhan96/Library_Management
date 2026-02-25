@@ -159,7 +159,7 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && searchTerm && navigate(`/search?q=${searchTerm}`)}
-                className="w-full px-14 py-5 text-xl outline-none text-white bg-transparent placeholder-white/50"
+                className={`w-full px-14 py-5 text-xl outline-none bg-transparent ${isDarkMode ? 'text-white placeholder-white/30' : 'text-text-dark placeholder-text-gray/50'}`}
               />
             </div>
             <button
@@ -206,11 +206,11 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
                   if (cat.id === 'judicial') navigate('/judicial-resources');
                   else if (cat.id === 'school') navigate('/school-education');
                   else if (cat.id === 'research') navigate('/research-resources');
-                  else if (cat.id === 'patents') navigate('/patents');
+                  else if (cat.id === 'patents') navigate('/patents-and-standards');
                   else if (cat.id === 'higher') navigate('/higher-education');
-                  else if (cat.id === 'career') navigate('/career');
-                  else if (cat.id === 'cultural') navigate('/culture');
-                  else if (cat.id === 'news') navigate('/newspapers');
+                  else if (cat.id === 'career') navigate('/career-development');
+                  else if (cat.id === 'cultural') navigate('/cultural-archives');
+                  else if (cat.id === 'news') navigate('/newspaper-archives');
                 }}
                 className="min-w-[340px] bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col transition-all duration-500 hover:-translate-y-6 hover:shadow-[0_40px_80px_rgba(0,0,0,0.18)] relative dark:bg-gray-800 border border-transparent dark:border-white/5 overflow-hidden group cursor-pointer"
               >

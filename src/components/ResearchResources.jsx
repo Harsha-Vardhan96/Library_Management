@@ -180,11 +180,22 @@ const ResearchResources = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                                     {section.items.map((item, itemIdx) => (
                                         <div
                                             key={itemIdx}
-                                            onClick={() => alert(`Accessing research node: ${item}`)}
-                                            className="group/item flex items-center gap-5 text-sm text-text-gray/90 dark:text-gray-400 hover:text-accent font-bold cursor-pointer transition-all duration-300"
+                                            className="group/item flex items-center justify-between text-sm text-text-gray/90 dark:text-gray-400 font-bold transition-all duration-300 hover:translate-x-2"
                                         >
-                                            <div className="min-w-2 h-2 rounded-full bg-accent/20 group-hover/item:bg-accent group-hover/item:scale-150 transition-all shadow-sm"></div>
-                                            <span className="truncate border-b-2 border-transparent group-hover/item:border-accent/10 pb-1">{item}</span>
+                                            <div
+                                                className="flex items-center gap-5 cursor-pointer hover:text-accent"
+                                                onClick={() => alert(`Accessing research node: ${item}`)}
+                                            >
+                                                <div className="min-w-2 h-2 rounded-full bg-accent/20 group-hover/item:bg-accent group-hover/item:scale-150 transition-all shadow-sm"></div>
+                                                <span className="truncate border-b-2 border-transparent group-hover/item:border-accent/10 pb-1">{item}</span>
+                                            </div>
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); alert(`Downloading: ${item}`); }}
+                                                className="opacity-0 group-hover/item:opacity-100 transition-opacity p-1.5 hover:bg-accent/10 rounded-lg text-accent"
+                                                title="Download Resource"
+                                            >
+                                                📥
+                                            </button>
                                         </div>
                                     ))}
                                 </div>

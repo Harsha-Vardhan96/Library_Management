@@ -26,9 +26,9 @@ const Login = ({ toggleTheme, isDarkMode, setUsername }) => {
       {/* Modern Controls */}
       <div className="absolute flex gap-4 z-[100] top-6 right-6">
         <Link
-          to="/"
+          to="/dashboard"
           className="flex items-center justify-center w-12 h-12 text-xl transition-all duration-300 border rounded-2xl bg-white/40 dark:bg-white/5 backdrop-blur-xl border-border-color dark:border-white/10 hover:bg-primary hover:text-white hover:scale-110 active:scale-95 shadow-lg"
-          title="Home"
+          title="Dashboard"
         >
           🏠
         </Link>
@@ -50,22 +50,22 @@ const Login = ({ toggleTheme, isDarkMode, setUsername }) => {
           <p className="mt-4 text-base text-text-gray font-medium">Sign in to your digital library account</p>
         </div>
 
-        {/* Role Toggle */}
+        {/* Role Selection */}
         <div className="mb-10 p-1 bg-gray-50/80 dark:bg-black/20 border border-border-color dark:border-white/5 rounded-2xl flex relative overflow-hidden">
           <div
-            className={`absolute top-1 bottom-1 w-[48%] bg-accent rounded-xl transition-all duration-500 ease-out shadow-lg shadow-accent/20 ${role === 'admin' ? 'left-[51%]' : 'left-1'}`}
+            className={`absolute top-1 bottom-1 w-[48%] bg-accent rounded-xl transition-all duration-500 ease-out shadow-lg shadow-accent/20 ${role === 'student' ? 'left-1' : 'left-[51%]'}`}
           ></div>
           <button
             onClick={() => setRole('student')}
             className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest relative z-10 transition-colors duration-300 ${role === 'student' ? 'text-white' : 'text-text-gray hover:text-text-dark'}`}
           >
-            Student / Educator
+            Student
           </button>
           <button
             onClick={() => setRole('admin')}
             className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest relative z-10 transition-colors duration-300 ${role === 'admin' ? 'text-white' : 'text-text-gray hover:text-text-dark'}`}
           >
-            Administrator
+            Admin
           </button>
         </div>
 

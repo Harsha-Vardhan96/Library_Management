@@ -14,6 +14,7 @@ import CareerDevelopment from './components/CareerDevelopment';
 import CulturalArchives from './components/CulturalArchives';
 import NewspaperArchives from './components/NewspaperArchives';
 import { LanguageProvider } from './context/LanguageContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -46,70 +47,72 @@ function App() {
   }, [isDarkMode]);
 
   return (
-    <LanguageProvider>
-      <Router>
-        <div className={`min-h-screen transition-colors duration-300 bg-bg-light ${isDarkMode ? 'dark' : ''}`}>
-          <Routes>
-            <Route
-              path="/"
-              element={<Login toggleTheme={toggleTheme} isDarkMode={isDarkMode} setUsername={setUsername} />}
-            />
-            <Route
-              path="/login"
-              element={<Login toggleTheme={toggleTheme} isDarkMode={isDarkMode} setUsername={setUsername} />}
-            />
-            <Route
-              path="/signup"
-              element={<Signup toggleTheme={toggleTheme} isDarkMode={isDarkMode} setUsername={setUsername} />}
-            />
-            <Route
-              path="/dashboard"
-              element={<Dashboard toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} username={username} />}
-            />
-            <Route
-              path="/admin-dashboard"
-              element={<AdminDashboard toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} username={username} />}
-            />
-            <Route
-              path="/judicial-resources"
-              element={<JudicialResources toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
-            />
-            <Route
-              path="/school-education"
-              element={<SchoolEducation toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
-            />
-            <Route
-              path="/research-resources"
-              element={<ResearchResources toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
-            />
-            <Route
-              path="/search"
-              element={<SearchResults toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
-            />
-            <Route
-              path="/patents-and-standards"
-              element={<PatentsAndStandards toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
-            />
-            <Route
-              path="/higher-education"
-              element={<HigherEducation toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
-            />
-            <Route
-              path="/career-development"
-              element={<CareerDevelopment toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
-            />
-            <Route
-              path="/cultural-archives"
-              element={<CulturalArchives toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
-            />
-            <Route
-              path="/newspaper-archives"
-              element={<NewspaperArchives toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
-            />
-          </Routes>
-        </div>
-      </Router>
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <Router>
+          <div className={`min-h-screen transition-colors duration-300 bg-bg-light ${isDarkMode ? 'dark' : ''}`}>
+            <Routes>
+              <Route
+                path="/"
+                element={<Login toggleTheme={toggleTheme} isDarkMode={isDarkMode} setUsername={setUsername} />}
+              />
+              <Route
+                path="/login"
+                element={<Login toggleTheme={toggleTheme} isDarkMode={isDarkMode} setUsername={setUsername} />}
+              />
+              <Route
+                path="/signup"
+                element={<Signup toggleTheme={toggleTheme} isDarkMode={isDarkMode} setUsername={setUsername} />}
+              />
+              <Route
+                path="/dashboard"
+                element={<Dashboard toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} username={username} />}
+              />
+              <Route
+                path="/admin-dashboard"
+                element={<AdminDashboard toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} username={username} />}
+              />
+              <Route
+                path="/judicial-resources"
+                element={<JudicialResources toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+              />
+              <Route
+                path="/school-education"
+                element={<SchoolEducation toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+              />
+              <Route
+                path="/research-resources"
+                element={<ResearchResources toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+              />
+              <Route
+                path="/search"
+                element={<SearchResults toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+              />
+              <Route
+                path="/patents-and-standards"
+                element={<PatentsAndStandards toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+              />
+              <Route
+                path="/higher-education"
+                element={<HigherEducation toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+              />
+              <Route
+                path="/career-development"
+                element={<CareerDevelopment toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+              />
+              <Route
+                path="/cultural-archives"
+                element={<CulturalArchives toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+              />
+              <Route
+                path="/newspaper-archives"
+                element={<NewspaperArchives toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+              />
+            </Routes>
+          </div>
+        </Router>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }
 
