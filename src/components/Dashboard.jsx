@@ -229,9 +229,13 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
                 <div className="flex-1 px-8 pt-16 pb-8 bg-white dark:bg-gray-800">
                   <ul className="space-y-3">
                     {cat.items.map((item, idx) => (
-                      <li key={idx} className="text-sm border-b border-gray-100 dark:border-white/5 last:border-none pb-3 flex items-center justify-between text-text-dark dark:text-gray-300 transition-colors hover:text-accent font-medium group/item text-left">
+                      <li
+                        key={idx}
+                        onClick={(e) => { e.stopPropagation(); navigate(`/view/${item}`); }}
+                        className="text-sm border-b border-gray-100 dark:border-white/5 last:border-none pb-3 flex items-center justify-between text-text-dark dark:text-gray-300 transition-all hover:text-accent font-medium group/item text-left cursor-pointer hover:translate-x-1"
+                      >
                         <div className="flex items-center gap-3">
-                          <span className="w-1.5 h-1.5 bg-accent rounded-full"></span> {item}
+                          <span className="text-xs group-hover/item:scale-125 transition-transform">📖</span> {item}
                         </div>
                       </li>
                     ))}

@@ -144,7 +144,10 @@ const SearchResults = ({ toggleTheme, isDarkMode }) => {
                                         </div>
                                     </div>
                                     <div className="flex gap-3 w-full md:w-auto">
-                                        <button className="flex-1 md:flex-none px-6 py-3 bg-gray-50 dark:bg-black/20 text-text-dark dark:text-gray-300 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-primary hover:text-white transition-all active:scale-95 border border-border-color dark:border-white/5">
+                                        <button
+                                            onClick={() => navigate(`/view/${res.title}`)}
+                                            className="flex-1 md:flex-none px-6 py-3 bg-gray-50 dark:bg-black/20 text-text-dark dark:text-gray-300 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-primary hover:text-white transition-all active:scale-95 border border-border-color dark:border-white/5"
+                                        >
                                             View Online
                                         </button>
                                         <button className="flex-1 md:flex-none px-6 py-3 bg-accent text-white rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-orange-600 transition-all active:scale-95 shadow-lg shadow-accent/20">

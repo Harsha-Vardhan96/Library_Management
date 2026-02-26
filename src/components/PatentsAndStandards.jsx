@@ -180,7 +180,7 @@ const PatentsAndStandards = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                                         >
                                             <div
                                                 className="flex items-center gap-5 cursor-pointer hover:text-accent"
-                                                onClick={() => alert(`Opening patent/standard document: ${item}`)}
+                                                onClick={() => navigate(`/view/${item}`)}
                                             >
                                                 <div className="min-w-2 h-2 rounded-full bg-accent/20 group-hover/item:bg-accent group-hover/item:scale-150 transition-all shadow-sm"></div>
                                                 <span className="truncate border-b-2 border-transparent group-hover/item:border-accent/10 pb-1">{item}</span>

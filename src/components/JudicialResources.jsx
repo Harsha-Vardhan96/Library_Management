@@ -165,17 +165,17 @@ const JudicialResources = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                                         >
                                             <div
                                                 className="flex items-center gap-3 cursor-pointer hover:text-accent"
-                                                onClick={() => alert(`Opening resource: ${item}`)}
+                                                onClick={() => navigate(`/view/${item}`)}
                                             >
-                                                <span className="text-[10px] opacity-20 group-hover/item:opacity-100 group-hover/item:scale-150 transition-all duration-300 text-accent">▶</span>
+                                                <span className="text-xs group-hover/item:scale-125 transition-all duration-300 text-accent">📖</span>
                                                 <span className="truncate border-b border-transparent group-hover/item:border-accent/20 pb-0.5">{item}</span>
                                             </div>
                                             <button
-                                                onClick={(e) => { e.stopPropagation(); alert(`Downloading: ${item}`); }}
+                                                onClick={(e) => { e.stopPropagation(); navigate(`/view/${item}`); }}
                                                 className="opacity-0 group-hover/item:opacity-100 transition-opacity p-1.5 hover:bg-accent/10 rounded-lg text-accent"
-                                                title="Download Resource"
+                                                title="Open Document"
                                             >
-                                                📥
+                                                📖
                                             </button>
                                         </div>
                                     ))}
@@ -184,7 +184,7 @@ const JudicialResources = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
 
                             <div className="px-8 py-4 bg-gray-50/50 dark:bg-black/10 border-t border-gray-100 dark:border-white/5 flex justify-center group-hover:bg-accent/5 transition-colors duration-500">
                                 <button
-                                    onClick={() => alert(`Loading more resources for ${section.title}...`)}
+                                    onClick={() => navigate(`/view/${section.title}`)}
                                     className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#2e7d32] dark:text-[#4caf50] hover:text-[#1b5e20] transition-all group/btn"
                                 >
                                     <span className="transition-all duration-500 group-hover/btn:scale-150 group-hover/btn:rotate-12">📚</span>

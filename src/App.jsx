@@ -13,6 +13,7 @@ import HigherEducation from './components/HigherEducation';
 import CareerDevelopment from './components/CareerDevelopment';
 import CulturalArchives from './components/CulturalArchives';
 import NewspaperArchives from './components/NewspaperArchives';
+import ResourceViewer from './components/ResourceViewer';
 import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
 
@@ -107,6 +108,10 @@ function App() {
               <Route
                 path="/newspaper-archives"
                 element={<NewspaperArchives toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+              />
+              <Route
+                path="/view/:id"
+                element={<ResourceViewer toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
               />
             </Routes>
           </div>

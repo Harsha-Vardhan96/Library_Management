@@ -180,17 +180,17 @@ const HigherEducation = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                                         >
                                             <div
                                                 className="flex items-center gap-5 cursor-pointer hover:text-accent"
-                                                onClick={() => alert(`Browsing curriculum/resources for: ${item}`)}
+                                                onClick={() => navigate(`/view/${item}`)}
                                             >
-                                                <div className="min-w-2 h-2 rounded-full bg-accent/20 group-hover/item:bg-accent group-hover/item:scale-150 transition-all shadow-sm"></div>
+                                                <span className="text-xs group-hover/item:scale-125 transition-transform text-accent">📖</span>
                                                 <span className="truncate border-b-2 border-transparent group-hover/item:border-accent/10 pb-1">{item}</span>
                                             </div>
                                             <button
-                                                onClick={(e) => { e.stopPropagation(); alert(`Downloading: ${item}`); }}
+                                                onClick={(e) => { e.stopPropagation(); navigate(`/view/${item}`); }}
                                                 className="opacity-0 group-hover/item:opacity-100 transition-opacity p-1.5 hover:bg-accent/10 rounded-lg text-accent"
-                                                title="Download Resource"
+                                                title="View Resource"
                                             >
-                                                📥
+                                                📖
                                             </button>
                                         </div>
                                     ))}
@@ -204,12 +204,12 @@ const HigherEducation = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                             {/* Action Footer */}
                             <div className="px-12 py-6 bg-gray-50/50 dark:bg-black/30 border-t border-gray-100 dark:border-white/5 flex justify-center group-hover:bg-accent/10 transition-colors duration-500">
                                 <button
-                                    onClick={() => alert(`Redirecting to Higher Ed ${section.title} repository...`)}
+                                    onClick={() => navigate(`/view/${section.title}`)}
                                     className="flex items-center gap-4 text-xs font-black uppercase tracking-[0.4em] text-[#4a148c] dark:text-[#b39ddb] hover:text-[#311b92] transition-all group/btn"
                                 >
                                     <span className="transition-all duration-700 group-hover/btn:scale-150 group-hover/btn:rotate-[45deg]">📚</span>
                                     <span className="relative overflow-hidden inline-block group-hover:scale-105 transition-all">
-                                        Open Repository
+                                        Open Academic Case
                                         <span className="absolute bottom-0 left-0 w-full h-[2px] bg-currentColor translate-x-[-105%] group-hover/btn:translate-x-0 transition-transform duration-700"></span>
                                     </span>
                                 </button>
