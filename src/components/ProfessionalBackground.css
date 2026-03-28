@@ -1,0 +1,97 @@
+/* ===== DARK MODE (default) ===== */
+.professional-bg-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    overflow: hidden;
+    background-color: #06020c;
+    pointer-events: none;
+    transition: background-color 0.6s ease;
+}
+
+.grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.2) 100%);
+    z-index: 1;
+    transition: background-image 0.6s ease;
+}
+
+.gradient-sphere {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.15;
+    animation: float-bg 20s infinite ease-in-out alternate;
+    z-index: 0;
+    transition: background 0.6s ease, opacity 0.6s ease;
+}
+
+.sphere-1 {
+    top: -10%;
+    left: -10%;
+    width: 50vw;
+    height: 50vw;
+    background: #4f46e5;
+    animation-delay: 0s;
+}
+
+.sphere-2 {
+    bottom: -20%;
+    right: -10%;
+    width: 60vw;
+    height: 60vw;
+    background: #7c3aed;
+    animation-delay: -5s;
+}
+
+.sphere-3 {
+    top: 40%;
+    left: 60%;
+    width: 40vw;
+    height: 40vw;
+    background: #0ea5e9;
+    animation-delay: -10s;
+}
+
+/* ===== LIGHT MODE overrides ===== */
+html.light .professional-bg-container {
+    background-color: #fffbf5;
+}
+
+html.light .grid-overlay {
+    background-image:
+        linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+}
+
+html.light .gradient-sphere {
+    opacity: 0.22;
+    filter: blur(120px);
+}
+
+html.light .sphere-1 {
+    background: #f97316; /* orange-500 */
+}
+
+html.light .sphere-2 {
+    background: #a855f7; /* purple-500 */
+}
+
+html.light .sphere-3 {
+    background: #06b6d4; /* cyan-500 */
+}
+
+@keyframes float-bg {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(5%, 10%) scale(1.1); }
+    100% { transform: translate(-5%, -5%) scale(0.9); }
+}

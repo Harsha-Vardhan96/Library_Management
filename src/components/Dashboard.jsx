@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { useTheme } from '../context/ThemeContext';
 import LanguageSwitcher from './LanguageSwitcher';
 import InfiniteCarousel from './InfiniteCarousel';
+import MagicRingsBackground from './MagicRingsBackground';
+import ThemeToggle from './ThemeToggle';
 
-const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
+const Dashboard = ({ toggleFullScreen, username }) => {
   const { t } = useLanguage();
+  const { isDark } = useTheme();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [placeholder, setPlaceholder] = useState('Search for "Machine Learning"');
-  const cardsWrapperRef = useRef(null);
   const exploreRef = useRef(null);
 
   const categories = [
@@ -66,12 +69,7 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const scrollCarousel = (direction) => {
-    if (cardsWrapperRef.current) {
-      const scrollAmount = direction === 'left' ? -300 : 300;
-      cardsWrapperRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  };
+
 
   const scrollToExplore = () => {
     if (exploreRef.current) {
@@ -80,21 +78,15 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
   };
 
   return (
-    <div className="flex flex-col w-full min-h-screen bg-bg-light transition-colors duration-500">
+    <div className={`flex flex-col w-full min-h-screen transition-colors duration-500 overflow-x-hidden relative ${isDark ? '' : 'bg-[#fffbf5]'}`}>
+      <MagicRingsBackground />
       {/* Top Utility Bar */}
-      <div className="z-[1050] bg-gradient-to-r from-primary to-[#003f42] text-white flex justify-between px-[5%] py-2.5 text-xs font-semibold tracking-wide sticky top-0 border-b border-primary/20 backdrop-blur-sm">
+      <div className={`z-[1050] flex justify-between px-[5%] py-2.5 text-xs font-semibold tracking-wide sticky top-0 border-b backdrop-blur-sm transition-colors duration-500 ${isDark ? 'bg-gradient-to-r from-primary to-[#003f42] text-white border-primary/20' : 'bg-white/80 text-gray-800 border-gray-200 shadow-sm'}`}>
         <div className="flex items-center gap-6">
-          <button
-            onClick={toggleTheme}
-            className="flex items-center gap-2 transition-all p-1 rounded-md hover:bg-white/10 active:scale-95 group"
-            title="Toggle theme"
-          >
-            <span className="text-sm group-hover:rotate-12 transition-transform">{isDarkMode ? '☀️' : '🌙'}</span>
-            <span className="hidden sm:inline opacity-90 group-hover:opacity-100">{isDarkMode ? 'Light' : 'Dark'} Mode</span>
-          </button>
-          <LanguageSwitcher isDark={true} />
+          <LanguageSwitcher />
         </div>
         <div className="flex items-center gap-6">
+          <ThemeToggle />
           <Link to="/login" className="flex items-center gap-2 opacity-90 hover:opacity-100 hover:text-accent transition-all group p-1">
             <span className="text-sm group-hover:-translate-y-px transition-transform">👤</span>
             <span className="hidden sm:inline">{username || t('login')}</span>
@@ -110,25 +102,25 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
       </div>
 
       {/* Modern Scrolling Header */}
-      <header className="z-[1000] sticky top-10 flex justify-center items-center py-5 px-[5%] bg-white/80 dark:bg-ndl-dark/80 backdrop-blur-xl border-b border-border-color/50 dark:border-white/5 shadow-sm transition-all duration-300">
-        <nav className="flex items-center gap-4 md:gap-12 px-8 py-3 bg-white/90 dark:bg-gray-800/90 border border-border-color shadow-sm rounded-full transition-all hover:shadow-md dark:border-white/10">
+      <header className="z-[1000] sticky top-10 flex justify-center items-center py-5 px-[5%] bg-ndl-dark/80 backdrop-blur-xl border-b border-white/5 shadow-sm transition-all duration-300">
+        <nav className="flex items-center gap-4 md:gap-12 px-8 py-3 bg-gray-800/90 border border-white/10 shadow-sm rounded-full transition-all hover:shadow-md">
           <button
             onClick={scrollToExplore}
-            className="text-sm font-black tracking-widest uppercase cursor-pointer text-gray-900 dark:text-white hover:text-accent transition-colors"
+            className="text-sm font-black tracking-widest uppercase cursor-pointer text-white hover:text-accent transition-colors"
           >
             {t('explore')}
           </button>
           <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"></span>
           <button
             onClick={() => navigate('/judicial-resources')}
-            className="text-sm font-black tracking-widest uppercase cursor-pointer text-gray-900 dark:text-white hover:text-accent transition-colors"
+            className="text-sm font-black tracking-widest uppercase cursor-pointer text-white hover:text-accent transition-colors"
           >
             {t('resources')}
           </button>
           <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse delay-75"></span>
           <button
             onClick={() => navigate('/school-education')}
-            className="text-sm font-black tracking-widest uppercase cursor-pointer text-gray-900 dark:text-white hover:text-accent transition-colors"
+            className="text-sm font-black tracking-widest uppercase cursor-pointer text-white hover:text-accent transition-colors"
           >
             {t('courses')}
           </button>
@@ -137,35 +129,33 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
 
 
       {/* Hero Section */}
-      <section className="relative flex flex-col items-center justify-center min-h-[550px] px-[5%] py-20 text-center overflow-hidden">
-        {/* Animated Background Canvas */}
-        <div className="bg-shape shape-1 animate-float opacity-40 dark:opacity-20"></div>
-        <div className="bg-shape shape-2 animate-float opacity-40 dark:opacity-20"></div>
+      <section className="relative flex flex-col items-center justify-center min-h-[600px] px-[5%] py-20 text-center">
 
         <div className="relative z-10 w-full max-w-5xl">
-          <h1 className="mb-6 text-5xl font-black leading-tight tracking-tighter md:text-8xl text-text-dark animate-fadeInDown drop-shadow-sm">
+          <h1 className={`mb-6 text-5xl font-black leading-tight tracking-tighter md:text-8xl animate-fadeInDown drop-shadow-sm transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>
             {t('heroTitlePrimary')} <span className="text-accent underline decoration-primary/20 transition-all hover:decoration-accent/40">{t('heroTitleSecondary')}</span>
           </h1>
-          <p className="max-w-2xl mx-auto mb-12 text-lg md:text-2xl text-text-gray font-medium animate-fadeInUp leading-relaxed">
+          <p className={`max-w-2xl mx-auto mb-12 text-lg md:text-2xl font-medium animate-fadeInUp leading-relaxed transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
             {t('heroSubtitle')}
           </p>
 
-          <div className="flex flex-col md:flex-row items-stretch w-full max-w-3xl mx-auto bg-white dark:bg-gray-800 shadow-2xl rounded-2xl animate-popIn border border-border-color dark:border-white/5 group ring-0 focus-within:ring-4 ring-accent/10 transition-all duration-500">
+          <div className="relative flex flex-col md:flex-row items-stretch w-full max-w-4xl mx-auto bg-white/5 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] rounded-2xl animate-popIn border border-white/20 group ring-0 focus-within:ring-4 ring-accent/30 transition-all duration-500 hover:shadow-[0_0_40px_rgba(255,109,0,0.15)] overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-accent/0 via-accent/5 to-accent/0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none"></div>
             <div className="relative flex-1 flex items-center">
-              <span className="absolute left-5 text-xl opacity-30 group-focus-within:opacity-100 transition-opacity">🔍</span>
+              <span className="absolute left-6 text-2xl opacity-40 group-focus-within:opacity-100 group-focus-within:text-accent transition-all duration-300">🔍</span>
               <input
                 type="text"
-                placeholder={t('searchPlaceholder')}
+                placeholder={placeholder || t('searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && searchTerm && navigate(`/search?q=${searchTerm}`)}
-                className={`w-full px-14 py-5 text-xl outline-none bg-transparent ${isDarkMode ? 'text-white placeholder-white/30' : 'text-text-dark placeholder-text-gray/50'}`}
+                className="w-full px-16 py-6 text-xl outline-none bg-transparent text-white placeholder-white/40 font-semibold"
               />
             </div>
             <button
               type="button"
               onClick={() => searchTerm && navigate(`/search?q=${searchTerm}`)}
-              className="px-10 py-5 font-black text-white transition-all bg-accent hover:bg-orange-600 hover:scale-[1.02] active:scale-95 shadow-lg shadow-accent/20"
+              className="relative px-12 py-6 font-black tracking-widest uppercase text-white transition-all bg-accent hover:bg-orange-500 hover:scale-105 active:scale-95 shadow-xl shadow-accent/30 z-10"
             >
               {t('searchButton')}
             </button>
@@ -175,19 +165,19 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
             <span className="py-2">{t('popular')}</span>
             <button
               onClick={() => navigate('/search?q=Computer Science')}
-              className="px-4 py-2 bg-white/50 dark:bg-white/5 rounded-full border border-border-color hover:bg-accent hover:text-white transition-all active:scale-95"
+              className="px-4 py-2 bg-white/5 rounded-full border border-white/10 hover:bg-accent hover:text-white transition-all active:scale-95"
             >
               Computer Science
             </button>
             <button
               onClick={() => navigate('/search?q=Law')}
-              className="px-4 py-2 bg-white/50 dark:bg-white/5 rounded-full border border-border-color hover:bg-accent hover:text-white transition-all active:scale-95"
+              className="px-4 py-2 bg-white/5 rounded-full border border-white/10 hover:bg-accent hover:text-white transition-all active:scale-95"
             >
               Law
             </button>
             <button
               onClick={() => navigate('/search?q=Chemistry')}
-              className="px-4 py-2 bg-white/50 dark:bg-white/5 rounded-full border border-border-color hover:bg-accent hover:text-white transition-all active:scale-95"
+              className="px-4 py-2 bg-white/5 rounded-full border border-white/10 hover:bg-accent hover:text-white transition-all active:scale-95"
             >
               Chemistry
             </button>
@@ -212,7 +202,11 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
                   else if (cat.id === 'cultural') navigate('/cultural-archives');
                   else if (cat.id === 'news') navigate('/newspaper-archives');
                 }}
-                className="min-w-[340px] bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col transition-all duration-500 hover:-translate-y-6 hover:shadow-[0_40px_80px_rgba(0,0,0,0.18)] relative dark:bg-gray-800 border border-transparent dark:border-white/5 overflow-hidden group cursor-pointer"
+                className={`relative min-w-[340px] backdrop-blur-xl rounded-[2.5rem] flex flex-col transition-all duration-500 hover:-translate-y-6 hover:border-accent/40 overflow-hidden group cursor-pointer border ${
+                  isDark
+                    ? 'bg-white/5 border-white/10 shadow-[0_40px_80px_rgba(0,0,0,0.3)] hover:shadow-[0_20px_60px_rgba(255,109,0,0.2)]'
+                    : 'bg-gray-800 border-gray-700 shadow-[0_20px_60px_rgba(0,0,0,0.35)] hover:shadow-[0_20px_60px_rgba(255,109,0,0.3)]'
+                }`}
               >
                 <div
                   className="h-44 bg-center bg-cover relative flex items-center justify-center transition-transform duration-700 group-hover:scale-110"
@@ -222,17 +216,17 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
                   <span className="relative z-10 text-xs font-black text-white uppercase tracking-[0.2em] drop-shadow-lg">{t(cat.id)}</span>
                 </div>
 
-                <div className="absolute top-36 left-1/2 -translate-x-1/2 w-20 h-20 bg-white dark:bg-gray-700 rounded-2xl shadow-xl flex items-center justify-center text-4xl z-10 border-4 border-white dark:border-gray-800 transition-all duration-500 group-hover:rotate-12 group-hover:scale-110">
+                <div className={`absolute top-36 left-1/2 -translate-x-1/2 w-20 h-20 rounded-2xl shadow-xl flex items-center justify-center text-4xl z-10 border-4 transition-all duration-500 group-hover:rotate-12 group-hover:scale-110 ${isDark ? 'bg-gray-700 border-gray-800' : 'bg-gray-900 border-gray-950'}`}>
                   {cat.icon}
                 </div>
 
-                <div className="flex-1 px-8 pt-16 pb-8 bg-white dark:bg-gray-800">
+                <div className={`flex-1 px-8 pt-16 pb-8 transition-colors duration-300 ${isDark ? 'bg-transparent' : 'bg-gray-800'}`}>
                   <ul className="space-y-3">
                     {cat.items.map((item, idx) => (
                       <li
                         key={idx}
                         onClick={(e) => { e.stopPropagation(); navigate(`/view/${item}`); }}
-                        className="text-sm border-b border-gray-100 dark:border-white/5 last:border-none pb-3 flex items-center justify-between text-text-dark dark:text-gray-300 transition-all hover:text-accent font-medium group/item text-left cursor-pointer hover:translate-x-1"
+                        className={`text-sm border-b last:border-none pb-3 flex items-center justify-between transition-all hover:text-accent font-semibold group/item text-left cursor-pointer hover:translate-x-1 ${isDark ? 'border-white/5 text-gray-300' : 'border-gray-600 text-gray-200'}`}
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-xs group-hover/item:scale-125 transition-transform">📖</span> {item}
@@ -242,7 +236,7 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
                   </ul>
                 </div>
 
-                <div className="px-8 py-5 border-t border-gray-50 dark:border-white/5 bg-gray-50/50 dark:bg-black/20 flex justify-center group-hover:bg-accent group-hover:text-white transition-all duration-500">
+                <div className={`px-8 py-5 border-t flex justify-center group-hover:bg-accent group-hover:text-white transition-all duration-500 ${isDark ? 'border-white/10 bg-black/30 text-gray-400' : 'border-gray-600 bg-gray-900 text-gray-300'}`}>
                   <button className="text-[10px] font-black uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-2 transition-transform">
                     {t('openCategory') || 'Open Category'} ➔
                   </button>
@@ -253,15 +247,15 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
         </div>
       </div>
 
-      <section className="py-20 px-[5%] bg-white dark:bg-gray-800/80 border-y border-border-color dark:border-white/5 animate-fadeInUp">
+      <section className="py-20 px-[5%] bg-gray-800/80 border-y border-white/5 animate-fadeInUp">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-sm font-black text-accent uppercase tracking-[0.4em] mb-4">Community Engagement</h2>
-          <h1 className="text-4xl font-black text-text-dark mb-10 tracking-tighter">Your feedback helps us <span className="italic">grow</span></h1>
+          <h1 className="text-4xl font-black text-white mb-10 tracking-tighter">Your feedback helps us <span className="italic">grow</span></h1>
           <div className="flex flex-col md:flex-row gap-6">
             <input
               type="text"
               placeholder="Tell us what you're looking for..."
-              className="flex-1 px-8 py-5 bg-gray-50 dark:bg-black/20 border border-border-color dark:border-white/5 focus:border-accent rounded-2xl outline-none text-text-dark transition-all"
+              className="flex-1 px-8 py-5 bg-black/20 border border-white/5 focus:border-accent rounded-2xl outline-none text-white transition-all"
             />
             <button
               onClick={() => alert('Thank you for your feedback!')}
@@ -296,10 +290,7 @@ const Dashboard = ({ toggleTheme, isDarkMode, toggleFullScreen, username }) => {
             <p className="text-gray-500 text-lg leading-relaxed max-w-lg">
               {t('footerDescription')}
             </p>
-            <div className="mt-10 flex gap-6 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 overflow-visible">
-              <img src="https://ndl.iitkgp.ac.in/assets/images/Ministry_Of_Education.png" alt="MOE" className="h-16" />
-              <img src="https://ndl.iitkgp.ac.in/assets/images/iit-kgp.png" alt="IIT KGP" className="h-16" />
-            </div>
+
           </div>
           <div>
             <h4 className="text-xs font-black mb-8 uppercase tracking-[0.4em] text-accent">{t('navigation')}</h4>

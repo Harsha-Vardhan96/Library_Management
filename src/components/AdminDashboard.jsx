@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
+import ProfessionalBackground from './ProfessionalBackground';
+import '../styles/AdminDashboard.css';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
+
+const AdminDashboard = ({ username }) => {
     const navigate = useNavigate();
     const { currentLanguage, changeLanguage, t } = useLanguage();
     const { accentColor, setAccentColor } = useTheme();
@@ -38,184 +42,251 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
         { id: 3, title: 'CBSE X Mathematics Textbook', category: 'School', date: '2026-02-18', status: 'Published' },
     ];
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { y: 20, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1,
+            transition: { type: 'spring', stiffness: 100 }
+        }
+    };
+
     const renderOverview = () => (
-        <div className="max-w-6xl mx-auto space-y-12 animate-fadeIn">
+        <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="max-w-7xl mx-auto space-y-12"
+        >
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div>
-                    <h2 className="text-xs font-black text-accent uppercase tracking-[0.4em] mb-3">System Overview</h2>
-                    <h1 className={`text-4xl md:text-5xl font-black tracking-tighter ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>
-                        Welcome Back, <span className="italic">{username || 'Administrator'}</span>
+            <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 relative z-20">
+                <div className="animate-fadeIn">
+                    <h2 className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.6em] mb-4 drop-shadow-sm">Command Matrix</h2>
+                    <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white leading-none">
+                        Welcome, <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 italic">{username || 'Root Admin'}</span>
                     </h1>
                 </div>
-                <button
+                <motion.button
+                    whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(99, 102, 241, 0.4)' }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setActiveTab('resources')}
-                    className="px-8 py-4 bg-primary hover:bg-[#004d40] text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl hover:-translate-y-1 active:translate-y-0 shadow-primary/20 flex items-center gap-3"
+                    className="px-10 py-6 bg-indigo-600 hover:bg-indigo-500 text-white rounded-[2rem] font-black uppercase tracking-widest text-xs transition-all shadow-[0_20px_50px_rgba(79,70,229,0.3)] flex items-center gap-4"
                 >
-                    <span>➕</span> New Resource
-                </button>
-            </div>
+                    <span className="text-xl">➕</span> New Asset
+                </motion.button>
+            </motion.div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fadeInUp">
+            <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {stats.map((stat, idx) => (
-                    <div key={idx} className={`${isDarkMode ? 'bg-gray-800/80 border-white/5' : 'bg-white border-border-color'} p-8 rounded-[2.5rem] shadow-[0_15px_45px_rgba(0,0,0,0.03)] border group hover:-translate-y-2 transition-all duration-500`}>
-                        <div className={`w-14 h-14 ${stat.color} rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-lg shadow-black/5 group-hover:rotate-12 transition-transform`}>
-                            {stat.icon}
+                    <motion.div
+                        key={idx}
+                        variants={itemVariants}
+                        whileHover={{ y: -12, scale: 1.02, transition: { duration: 0.3 } }}
+                        className="relative group cursor-default"
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2.5rem] blur-xl" />
+                        <div className="bg-gray-900/40 backdrop-blur-2xl border border-white/10 p-10 rounded-[2.5rem] shadow-2xl relative z-10 hover:border-indigo-500/30 transition-colors">
+                            <div className={`w-16 h-16 ${stat.color} rounded-[1.5rem] flex items-center justify-center text-3xl mb-10 shadow-[0_10px_30px_rgba(0,0,0,0.3)] group-hover:scale-110 group-hover:rotate-12 transition-all`}>
+                                {stat.icon}
+                            </div>
+                            <p className="text-[10px] font-black uppercase tracking-[0.4em] mb-3 text-indigo-300/60">{stat.label}</p>
+                            <h3 className="text-5xl font-black tracking-tighter text-white drop-shadow-md">{stat.value}</h3>
                         </div>
-                        <p className={`text-xs font-black uppercase tracking-widest mb-1 ${isDarkMode ? 'text-gray-400' : 'text-text-gray/80'}`}>{stat.label}</p>
-                        <h3 className={`text-3xl font-black tracking-tighter ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>{stat.value}</h3>
-                    </div>
+                    </motion.div>
                 ))}
-            </div>
+            </motion.div>
 
             {/* Two Column Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className={`lg:col-span-2 ${isDarkMode ? 'bg-gray-800/80 border-white/5' : 'bg-white border-border-color'} p-10 rounded-[3rem] shadow-[0_15px_45px_rgba(0,0,0,0.03)] border`}>
-                    <div className="flex items-center justify-between mb-10">
-                        <h3 className={`text-xl font-black tracking-tight ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>Recent Content Submissions</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                <motion.div
+                    variants={itemVariants}
+                    className="lg:col-span-2 bg-gray-900/40 backdrop-blur-2xl border border-white/10 p-12 rounded-[3.5rem] shadow-2xl relative overflow-hidden"
+                >
+                    <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+                    
+                    <div className="flex items-center justify-between mb-12 relative z-10">
+                        <div className="flex items-center gap-4">
+                            <div className="w-1 h-8 bg-indigo-500 rounded-full" />
+                            <h3 className="text-2xl font-black tracking-tight text-white uppercase tracking-widest">Recent Activity</h3>
+                        </div>
                         <button
                             onClick={() => setActiveTab('resources')}
-                            className="text-xs font-bold text-primary dark:text-accent transition-colors uppercase tracking-widest"
+                            className="text-[10px] font-black text-indigo-400 hover:text-white transition-all uppercase tracking-[0.3em] bg-white/5 py-2 px-6 rounded-full border border-white/10 hover:bg-indigo-500 hover:border-indigo-400"
                         >
-                            View All
+                            Audit Hub
                         </button>
                     </div>
-                    <div className="space-y-4">
-                        {recentUploads.map(upload => (
-                            <div key={upload.id} className="flex items-center justify-between p-6 bg-gray-50/50 dark:bg-black/20 rounded-2xl border border-transparent hover:border-accent/20 transition-all group">
-                                <div className="flex items-center gap-5">
-                                    <div className="w-12 h-12 bg-white dark:bg-gray-700 rounded-xl flex items-center justify-center text-xl shadow-sm">
+
+                    <div className="space-y-6 relative z-10">
+                        {recentUploads.map((upload, idx) => (
+                            <motion.div
+                                key={upload.id}
+                                whileHover={{ x: 10, backgroundColor: 'rgba(255,255,255,0.05)' }}
+                                className="flex items-center justify-between p-8 bg-black/20 rounded-[2.5rem] border border-white/5 hover:border-indigo-500/30 transition-all group"
+                            >
+                                <div className="flex items-center gap-8">
+                                    <div className="w-16 h-16 bg-gray-800 rounded-[1.25rem] flex items-center justify-center text-3xl shadow-2xl group-hover:scale-110 transition-transform">
                                         {upload.category === 'Judicial' ? '⚖️' : upload.category === 'Research' ? '🔬' : '🏫'}
                                     </div>
                                     <div>
-                                        <h4 className={`font-bold transition-colors ${isDarkMode ? 'text-white group-hover:text-accent' : 'text-text-dark group-hover:text-primary'}`}>{upload.title}</h4>
-                                        <p className={`text-xs font-medium ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>{upload.category} • {upload.date}</p>
+                                        <h4 className="text-xl font-bold transition-colors text-white group-hover:text-indigo-400 leading-tight">{upload.title}</h4>
+                                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-300/40 mt-2">{upload.category} • {upload.date}</p>
                                     </div>
                                 </div>
-                                <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${upload.status === 'Published' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'}`}>
+                                <span className={`px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] ${upload.status === 'Published' ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-400/30' : 'bg-orange-500/20 text-orange-400 border border-orange-400/30'}`}>
                                     {upload.status}
                                 </span>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
-                </div>
+                </motion.div>
 
-                {/* Quick Access */}
-                <div className={`${isDarkMode ? 'bg-gray-900/40' : 'bg-primary'} p-10 rounded-[3rem] text-white flex flex-col justify-between group overflow-hidden relative shadow-2xl`}>
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-accent opacity-20 rounded-full blur-3xl -translate-y-16 translate-x-16"></div>
+                {/* Secure Access Module Card */}
+                <motion.div
+                    variants={itemVariants}
+                    className="bg-indigo-700/80 backdrop-blur-2xl p-12 rounded-[3.5rem] text-white flex flex-col justify-between relative overflow-hidden group shadow-[0_30px_70px_rgba(79,70,229,0.3)] border border-indigo-400/20"
+                >
+                    <div className="absolute top-0 right-0 w-96 h-96 bg-white opacity-10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 group-hover:scale-125 transition-transform duration-1000" />
+                    
                     <div className="relative z-10">
-                        <h3 className="text-xl font-black mb-6 tracking-tight">Access Control</h3>
-                        <p className="text-sm text-white/80 mb-8 leading-relaxed">Instantly manage user roles or suspend accounts from the centralized directory.</p>
-                        <div className="space-y-3">
-                            <button className={`w-full py-4 bg-white/10 hover:bg-white text-white ${isDarkMode ? 'hover:text-ndl-dark' : 'hover:text-primary'} font-black uppercase tracking-widest text-[10px] rounded-2xl transition-all border border-white/5 hover:border-white`} onClick={() => setActiveTab('users')}>
-                                Member Directory
-                            </button>
-                            <button
+                        <div className="w-20 h-20 bg-white/20 backdrop-blur-xl rounded-[1.5rem] flex items-center justify-center text-4xl mb-10 shadow-2xl">
+                            🛡️
+                        </div>
+                        <h3 className="text-4xl font-black mb-6 tracking-tighter leading-none">Access<br />Matrix</h3>
+                        <p className="text-indigo-100 text-sm mb-12 leading-relaxed font-semibold opacity-80">Protocol-level user management and administrative clearance synchronization.</p>
+                        
+                        <div className="space-y-4">
+                            <motion.button 
+                                whileHover={{ y: -4, scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="w-full py-6 bg-white text-indigo-900 font-black uppercase tracking-widest text-xs rounded-[1.5rem] transition-all shadow-[0_15px_30px_rgba(255,255,255,0.1)]"
                                 onClick={() => setActiveTab('users')}
-                                className="w-full py-4 bg-accent hover:bg-orange-600 text-white font-black uppercase tracking-widest text-[10px] rounded-2xl transition-all shadow-lg shadow-accent/20"
                             >
-                                Add New Admin
-                            </button>
+                                Member Registry
+                            </motion.button>
+                            <motion.button 
+                                whileHover={{ y: -4, scale: 1.02, backgroundColor: 'rgba(0,0,0,1)' }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => setActiveTab('users')}
+                                className="w-full py-6 bg-gray-900/50 backdrop-blur-md text-white font-black uppercase tracking-widest text-xs rounded-[1.5rem] transition-all border border-white/20"
+                            >
+                                Secure Actions
+                            </motion.button>
                         </div>
                     </div>
-                    <div className="mt-12 pt-12 border-t border-white/10 text-[10px] font-black uppercase tracking-[0.3em] opacity-60">
-                        NDLI Security Protocol v4.2
+                    
+                    <div className="mt-14 pt-10 border-t border-white/10 text-[10px] font-black uppercase tracking-[0.6em] opacity-40 relative z-10">
+                        AUTH KERNEL v9.42
                     </div>
-                </div>
+                </motion.div>
             </div>
-        </div>
+        </motion.div>
     );
 
     const renderResources = () => (
-        <div className="max-w-6xl mx-auto space-y-12 animate-fadeIn">
-            <div>
-                <h2 className="text-xs font-black text-accent uppercase tracking-[0.4em] mb-3">Resource Management</h2>
-                <h1 className={`text-4xl font-black tracking-tighter ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>Resources <span className="italic">Hub</span></h1>
+        <div className="max-w-7xl mx-auto space-y-12 animate-up">
+            <div className="mb-10">
+                <h2 className="text-xs font-black text-accent uppercase tracking-[0.4em] mb-3 opacity-70">Catalog Management</h2>
+                <h1 className="text-5xl font-black tracking-tighter text-white">Resources <span className="text-accent italic">Hub</span></h1>
             </div>
-            <div className={`${isDarkMode ? 'bg-gray-800/80 border-white/5' : 'bg-white border-border-color'} rounded-[3rem] shadow-xl border overflow-hidden`}>
-                <div className={`p-10 border-b flex flex-wrap gap-6 justify-between items-center ${isDarkMode ? 'bg-black/10 border-white/5' : 'bg-gray-50/50 border-border-color'}`}>
-                    <div className="relative flex-1 min-w-[300px]">
-                        <span className="absolute left-5 top-1/2 -translate-y-1/2 opacity-30">🔍</span>
+            
+            <div className="glass-panel overflow-hidden border-white/10 shadow-2xl">
+                <div className="p-10 flex flex-wrap gap-8 justify-between items-center bg-white/[0.02] border-b border-white/5">
+                    <div className="relative flex-1 min-w-[320px] group">
+                        <span className="absolute left-6 top-1/2 -translate-y-1/2 text-xl opacity-30 group-focus-within:opacity-100 transition-opacity">🔍</span>
                         <input
                             type="text"
-                            placeholder="Search resources..."
+                            placeholder="Search resources by title or category..."
                             value={resourceSearchTerm}
                             onChange={(e) => setResourceSearchTerm(e.target.value)}
-                            className="w-full pl-14 pr-6 py-4 bg-white dark:bg-gray-700 border border-border-color dark:border-white/10 rounded-2xl outline-none focus:border-accent transition-all"
+                            className="search-input-glass w-full pl-16 pr-8 py-5 rounded-2xl outline-none"
                         />
                     </div>
                     <div className="flex gap-4">
                         <button
                             onClick={() => alert('Filter options coming soon!')}
-                            className="px-6 py-3 bg-white dark:bg-gray-700 border border-border-color dark:border-white/10 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-white/5 transition-all"
+                            className="px-8 py-4 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all active:scale-95"
                         >
-                            Filter
+                            Refine
                         </button>
                         <button
                             onClick={() => alert('Opening Add Resource flow...')}
-                            className="px-6 py-3 bg-accent text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-lg shadow-accent/20 hover:scale-[1.02] active:scale-95 transition-all"
+                            className="px-8 py-4 bg-accent text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-2xl shadow-accent/20 hover:scale-[1.05] active:scale-95 transition-all"
                         >
-                            Add New
+                            Add New Data
                         </button>
                     </div>
                 </div>
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left">
+
+                <div className="p-8 overflow-x-auto">
+                    <table className="table-glass">
                         <thead>
-                            <tr className={`${isDarkMode ? 'bg-black/20' : 'bg-gray-100/50'}`}>
-                                <th className={`px-10 py-6 text-xs font-black uppercase tracking-widest ${isDarkMode ? 'text-gray-400' : 'text-text-dark/70'}`}>Resource Title</th>
-                                <th className={`px-10 py-6 text-xs font-black uppercase tracking-widest ${isDarkMode ? 'text-gray-400' : 'text-text-dark/70'}`}>Category</th>
-                                <th className={`px-10 py-6 text-xs font-black uppercase tracking-widest ${isDarkMode ? 'text-gray-400' : 'text-text-dark/70'}`}>Status</th>
-                                <th className={`px-10 py-6 text-xs font-black uppercase tracking-widest ${isDarkMode ? 'text-gray-400' : 'text-text-dark/70'} text-right`}>Actions</th>
+                            <tr>
+                                <th>Resource Title</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th className="text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-border-color dark:divide-white/5">
+                        <tbody>
                             {filteredResources.length > 0 ? (
-                                filteredResources.map(resource => (
-                                    <tr key={resource.id} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group">
-                                        <td className={`px-10 py-8 font-bold transition-colors ${isDarkMode ? 'text-white group-hover:text-accent' : 'text-text-dark group-hover:text-primary'}`}>
+                                filteredResources.map((resource, idx) => (
+                                    <tr key={resource.id} className={`animate-up delay-${(idx % 5) + 1}`}>
+                                        <td className="font-bold text-white group-hover:text-accent transition-colors">
                                             {resource.title}
                                         </td>
-                                        <td className={`px-10 py-8 text-sm ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>
-                                            {resource.category}
+                                        <td>
+                                            <span className="text-xs font-black uppercase tracking-widest opacity-50">{resource.category}</span>
                                         </td>
-                                        <td className="px-10 py-8">
-                                            <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${resource.status === 'Published' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'}`}>
+                                        <td>
+                                            <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${resource.status === 'Published' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-orange-500/10 text-orange-400 border-orange-500/20'}`}>
                                                 {resource.status}
                                             </span>
                                         </td>
-                                        <td className="px-10 py-8 text-right space-x-4">
-                                            <button
-                                                onClick={() => alert(`Downloading: ${resource.title}`)}
-                                                className="text-accent hover:scale-110 transition-transform"
-                                                title="Download Resource"
-                                            >
-                                                📥
-                                            </button>
-                                            <button
-                                                onClick={() => alert(`Editing: ${resource.title}`)}
-                                                className="text-primary hover:text-accent transition-colors"
-                                            >
-                                                ✎
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    if (window.confirm('Are you sure you want to delete this resource?')) {
-                                                        alert('Resource deleted successfully!');
-                                                    }
-                                                }}
-                                                className="text-red-500 hover:text-red-700 transition-colors"
-                                            >
-                                                🗑
-                                            </button>
+                                        <td className="text-right">
+                                            <div className="flex justify-end gap-3">
+                                                <button
+                                                    onClick={() => alert(`Downloading: ${resource.title}`)}
+                                                    className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-accent hover:text-white rounded-xl transition-all"
+                                                    title="Download"
+                                                >
+                                                    📥
+                                                </button>
+                                                <button
+                                                    onClick={() => alert(`Editing: ${resource.title}`)}
+                                                    className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-primary hover:text-white rounded-xl transition-all"
+                                                    title="Edit"
+                                                >
+                                                    ✎
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        if (window.confirm('Are you sure you want to delete this resource?')) {
+                                                            alert('Resource deleted successfully!');
+                                                        }
+                                                    }}
+                                                    className="w-10 h-10 flex items-center justify-center bg-white/5 hover:bg-red-500 hover:text-white rounded-xl transition-all"
+                                                    title="Delete"
+                                                >
+                                                    🗑
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="4" className="px-10 py-20 text-center text-text-gray/50 uppercase font-black tracking-widest text-xs">
-                                        No resources found matching "{resourceSearchTerm}"
+                                    <td colSpan="4" className="py-20 text-center text-white/20 uppercase font-black tracking-[0.3em] text-[10px]">
+                                        No assets matching your query
                                     </td>
                                 </tr>
                             )}
@@ -227,42 +298,47 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
     );
 
     const renderUsers = () => (
-        <div className="max-w-6xl mx-auto space-y-12 animate-fadeIn">
-            <div>
-                <h2 className="text-xs font-black text-accent uppercase tracking-[0.4em] mb-3">Community Control</h2>
-                <h1 className={`text-4xl font-black tracking-tighter ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>User <span className="italic">Directory</span></h1>
+        <div className="max-w-7xl mx-auto space-y-12 animate-up">
+            <div className="mb-10">
+                <h2 className="text-xs font-black text-accent uppercase tracking-[0.4em] mb-3 opacity-70">Identity & Access</h2>
+                <h1 className="text-5xl font-black tracking-tighter text-white">Member <span className="text-accent italic">Directory</span></h1>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {[
-                    { name: 'Harsha Vardhan', role: 'Administrator', color: 'bg-blue-500' },
-                    { name: 'Lohith Reddy', role: 'Student', color: 'bg-green-500' },
-                    { name: 'Gopi Krishna', role: 'Administrator', color: 'bg-purple-500' },
-                    { name: 'Rajesh Kumar', role: 'Librarian', color: 'bg-orange-500' },
-                    { name: 'Elena Gilbert', role: 'Librarian', color: 'bg-pink-500' },
-                    { name: 'Damon Salvatore', role: 'Student', color: 'bg-teal-500' }
+                    { name: 'Harsha Vardhan', role: 'Administrator', color: 'bg-blue-500', email: 'harsha@ndli.gov' },
+                    { name: 'Lohith Reddy', role: 'Student', color: 'bg-green-500', email: 'lohith@ndli.gov' },
+                    { name: 'Gopi Krishna', role: 'Administrator', color: 'bg-purple-500', email: 'gopi@ndli.gov' },
+                    { name: 'Rajesh Kumar', role: 'Librarian', color: 'bg-orange-500', email: 'rajesh@ndli.gov' },
+                    { name: 'Elena Gilbert', role: 'Librarian', color: 'bg-pink-500', email: 'elena@ndli.gov' },
+                    { name: 'Damon Salvatore', role: 'Student', color: 'bg-teal-500', email: 'damon@ndli.gov' }
                 ].map((user, idx) => (
-                    <div key={idx} className={`${isDarkMode ? 'bg-gray-800/80 border-white/5' : 'bg-white border-border-color'} p-10 rounded-[3rem] shadow-xl border flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-500`}>
-                        <div className={`w-24 h-24 ${user.color} rounded-full flex items-center justify-center text-4xl text-white mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
-                            {user.name.charAt(0)}
+                    <div key={idx} className={`glass-panel p-10 flex flex-col items-center text-center group animate-up delay-${(idx % 3) + 1}`}>
+                        <div className="relative mb-8">
+                            <div className={`w-28 h-28 ${user.color} rounded-3xl flex items-center justify-center text-4xl text-white shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
+                                {user.name.charAt(0)}
+                            </div>
+                            <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 border-4 border-ndl-dark rounded-full shadow-lg"></div>
                         </div>
-                        <h3 className={`text-xl font-black mb-2 tracking-tight ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>{user.name}</h3>
-                        <p className="text-xs font-black text-accent uppercase tracking-widest mb-8">{user.role}</p>
-                        <div className="flex gap-3 w-full">
+                        <h3 className="text-2xl font-black mb-1 tracking-tight text-white">{user.name}</h3>
+                        <p className="text-[10px] font-black text-accent uppercase tracking-widest mb-2">{user.role}</p>
+                        <p className="text-xs text-white/30 mb-8 font-medium">{user.email}</p>
+                        
+                        <div className="flex gap-4 w-full pt-6 border-t border-white/5">
                             <button
                                 onClick={() => alert(`Viewing profile for: ${user.name}`)}
-                                className="flex-1 py-4 bg-gray-50 dark:bg-black/20 hover:bg-primary hover:text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all"
+                                className="flex-1 py-4 bg-white/5 hover:bg-white hover:text-ndl-dark rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border border-white/5"
                             >
-                                Profile
+                                Details
                             </button>
                             <button
                                 onClick={() => {
                                     if (window.confirm(`Are you sure you want to suspend: ${user.name}?`)) {
                                         alert('User suspended successfully!');
                                     }
-                                }}
-                                className="flex-1 py-4 bg-gray-50 dark:bg-black/20 hover:bg-accent hover:text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all"
+                                    }}
+                                className="flex-1 py-4 bg-white/5 hover:bg-red-500 hover:text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border border-white/5"
                             >
-                                Suspend
+                                Restrict
                             </button>
                         </div>
                     </div>
@@ -273,42 +349,56 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
     );
 
     const renderAnalytics = () => (
-        <div className="max-w-6xl mx-auto space-y-12 animate-fadeIn">
-            <div>
-                <h2 className="text-xs font-black text-accent uppercase tracking-[0.4em] mb-3">Platform Performance</h2>
-                <h1 className={`text-4xl font-black tracking-tighter ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>System <span className="italic">Analytics</span></h1>
+        <div className="max-w-7xl mx-auto space-y-12 animate-up">
+            <div className="mb-10">
+                <h2 className="text-xs font-black text-accent uppercase tracking-[0.4em] mb-3 opacity-70">Platform Performance</h2>
+                <h1 className="text-5xl font-black tracking-tighter text-white">System <span className="text-accent italic">Analytics</span></h1>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className={`${isDarkMode ? 'bg-gray-800/80 border-white/5' : 'bg-white border-border-color'} p-10 rounded-[3rem] shadow-xl border`}>
-                    <h3 className={`text-xl font-black mb-10 tracking-tight ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>Growth Projection</h3>
-                    <div className="flex items-end gap-4 h-64 px-4 overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div className="glass-panel p-12">
+                    <h3 className="text-2xl font-black mb-12 tracking-tight text-white flex items-center gap-4">
+                        <span className="w-2 h-8 bg-accent rounded-full"></span>
+                        Growth Projection
+                    </h3>
+                    <div className="flex items-end gap-5 h-72 px-4 overflow-hidden">
                         {[40, 60, 45, 90, 75, 100, 85].map((h, i) => (
-                            <div key={i} className="flex-1 h-full flex flex-col justify-end items-center gap-4">
-                                <div style={{ height: `${h}%` }} className="w-full bg-accent rounded-t-xl relative group">
-                                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-ndl-dark text-white px-3 py-1 rounded-lg text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">{h}% Increase</div>
+                            <div key={i} className="flex-1 h-full flex flex-col justify-end items-center gap-5">
+                                <div 
+                                    style={{ height: `${h}%` }} 
+                                    className="w-full bg-accent/20 border-t-4 border-accent rounded-t-2xl relative group hover:bg-accent/40 transition-all cursor-pointer"
+                                >
+                                    <div className="absolute -top-14 left-1/2 -translate-x-1/2 bg-white text-ndl-dark px-4 py-2 rounded-xl text-[10px] font-black opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100 whitespace-nowrap shadow-2xl">
+                                        +{h}% REVENUE
+                                    </div>
                                 </div>
-                                <span className={`text-[10px] font-black uppercase ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>M {i + 1}</span>
+                                <span className="text-[10px] font-black uppercase text-white/30 tracking-widest">PER {i + 1}</span>
                             </div>
                         ))}
                     </div>
                 </div>
-                <div className={`${isDarkMode ? 'bg-gray-900/40' : 'bg-primary'} p-10 rounded-[3rem] text-white shadow-2xl relative overflow-hidden`}>
-                    <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-accent/20 rounded-full blur-3xl"></div>
-                    <h3 className="text-xl font-black mb-10 tracking-tight">Real-time Metrics</h3>
-                    <div className="space-y-8 relative z-10">
+                <div className="glass-panel p-12 relative overflow-hidden group">
+                    <div className="absolute -right-20 -bottom-20 w-96 h-96 bg-accent opacity-5 rounded-full blur-[100px] group-hover:opacity-10 transition-opacity"></div>
+                    <h3 className="text-2xl font-black mb-12 tracking-tight text-white flex items-center gap-4">
+                        <span className="w-2 h-8 bg-primary rounded-full"></span>
+                        Real-time Metrics
+                    </h3>
+                    <div className="space-y-10 relative z-10">
                         {[
-                            { label: 'Server Stability', val: '99.9%', w: 'w-[99.9%]' },
-                            { label: 'Cache Hit Rate', val: '86.4%', w: 'w-[86.4%]' },
-                            { label: 'Database Sync', val: '100%', w: 'w-full' },
-                            { label: 'SSL integrity', val: 'Secure', w: 'w-full' }
+                            { label: 'Server Stability', val: '99.9%', w: '99.9%', color: 'bg-green-500' },
+                            { label: 'Cache Hit Rate', val: '86.4%', w: '86.4%', color: 'bg-blue-500' },
+                            { label: 'Database Sync', val: '100%', w: '100%', color: 'bg-accent' },
+                            { label: 'SSL integrity', val: 'Optimal', w: '100%', color: 'bg-purple-500' }
                         ].map((m, i) => (
-                            <div key={i}>
-                                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest mb-3">
+                            <div key={i} className="animate-up" style={{ animationDelay: `${0.1 * i}s` }}>
+                                <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] mb-4 text-white/50">
                                     <span>{m.label}</span>
-                                    <span>{m.val}</span>
+                                    <span className="text-white">{m.val}</span>
                                 </div>
-                                <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                                    <div className={`h-full bg-accent ${m.w} rounded-full`}></div>
+                                <div className="h-3 bg-white/5 rounded-full overflow-hidden border border-white/5 p-[2px]">
+                                    <div 
+                                        className={`h-full ${m.color} rounded-full transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(255,255,255,0.1)]`} 
+                                        style={{ width: `${m.w}%` }}
+                                    ></div>
                                 </div>
                             </div>
                         ))}
@@ -319,86 +409,83 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
     );
 
     const renderSettings = () => (
-        <div className="max-w-6xl mx-auto space-y-12 animate-fadeIn pb-20">
-            <div>
-                <h2 className="text-xs font-black text-accent uppercase tracking-[0.4em] mb-3">Console Configuration</h2>
-                <h1 className={`text-4xl font-black tracking-tighter ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>Portal <span className="italic">Settings</span></h1>
+        <div className="max-w-7xl mx-auto space-y-12 animate-up pb-20">
+            <div className="mb-10">
+                <h2 className="text-xs font-black text-accent uppercase tracking-[0.4em] mb-3 opacity-70">Console Configuration</h2>
+                <h1 className="text-5xl font-black tracking-tighter text-white">Portal <span className="text-accent italic">Settings</span></h1>
             </div>
 
-            <form className="space-y-8" onSubmit={(e) => { e.preventDefault(); alert('Settings saved successfully!'); }}>
+            <form className="space-y-10" onSubmit={(e) => { e.preventDefault(); alert('Settings saved successfully!'); }}>
                 {/* Profile Settings */}
-                <div className={`${isDarkMode ? 'bg-gray-800/80 border-white/5' : 'bg-white border-border-color'} p-10 rounded-[3rem] shadow-xl border`}>
-                    <h3 className={`text-xl font-black mb-8 tracking-tight ${isDarkMode ? 'text-white' : 'text-ndl-dark'} flex items-center gap-3`}>
-                        <span className="opacity-50 text-base">👤</span> Profile Information
+                <div className="glass-panel p-12">
+                    <h3 className="text-2xl font-black mb-10 tracking-tight text-white flex items-center gap-4">
+                        <span className="opacity-30 text-2xl">👤</span> Profile Information
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div className="space-y-4">
-                            <label className={`block text-[10px] font-black uppercase tracking-widest px-1 ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>Admin Display Name</label>
-                            <input type="text" placeholder={username || 'Administrator'} className="w-full px-6 py-4 bg-gray-50 dark:bg-black/20 border border-border-color dark:border-white/5 rounded-2xl outline-none focus:border-accent transition-all text-text-dark dark:text-white placeholder:text-text-gray/50" />
+                            <label className="block text-[10px] font-black uppercase tracking-[0.2em] px-1 text-white/40">Admin Display Name</label>
+                            <input type="text" placeholder={username || 'Administrator'} className="w-full px-8 py-5 bg-white/5 border border-white/5 rounded-2xl outline-none focus:border-accent transition-all text-white placeholder:text-white/20 font-bold" />
                         </div>
                         <div className="space-y-4">
-                            <label className={`block text-[10px] font-black uppercase tracking-widest px-1 ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>Institutional Email</label>
-                            <input type="email" placeholder="admin@ndli.gov.in" className="w-full px-6 py-4 bg-gray-50 dark:bg-black/20 border border-border-color dark:border-white/5 rounded-2xl outline-none focus:border-accent transition-all text-text-dark dark:text-white placeholder:text-text-gray/50" />
+                            <label className="block text-[10px] font-black uppercase tracking-[0.2em] px-1 text-white/40">Institutional Email</label>
+                            <input type="email" placeholder="admin@ndli.gov.in" className="w-full px-8 py-5 bg-white/5 border border-white/5 rounded-2xl outline-none focus:border-accent transition-all text-white placeholder:text-white/20 font-bold" />
                         </div>
                     </div>
                 </div>
 
                 {/* Security Settings */}
-                <div className={`${isDarkMode ? 'bg-gray-800/80 border-white/5' : 'bg-white border-border-color'} p-10 rounded-[3rem] shadow-xl border`}>
-                    <h3 className={`text-xl font-black mb-8 tracking-tight ${isDarkMode ? 'text-white' : 'text-ndl-dark'} flex items-center gap-3`}>
-                        <span className="opacity-50 text-base">🛡️</span> Security & Privacy
+                <div className="glass-panel p-12">
+                    <h3 className="text-2xl font-black mb-10 tracking-tight text-white flex items-center gap-4">
+                        <span className="opacity-30 text-2xl">🛡️</span> Security & Privacy
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                        <div className="flex items-center justify-between p-6 bg-gray-50 dark:bg-black/10 rounded-2xl">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div className="flex items-center justify-between p-8 bg-white/5 rounded-3xl border border-white/5">
                             <div>
-                                <h4 className={`font-bold ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>Two-Factor Authentication</h4>
-                                <p className="text-[10px] text-text-gray mt-1 uppercase tracking-widest font-black opacity-60">Enhanced account protection</p>
+                                <h4 className="text-lg font-bold text-white">Two-Factor Authentication</h4>
+                                <p className="text-[10px] text-white/30 mt-1 uppercase tracking-widest font-black">Biometric & MFA Integration</p>
                             </div>
-                            <label className="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" className="sr-only peer" />
-                                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-accent"></div>
-                            </label>
+                            <input type="checkbox" className="custom-toggle" />
                         </div>
                         <div className="space-y-4">
-                            <label className={`block text-[10px] font-black uppercase tracking-widest px-1 ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>Auto-Logout Session</label>
-                            <select className="w-full px-6 py-4 bg-gray-50 dark:bg-black/20 border border-border-color dark:border-white/5 rounded-2xl outline-none focus:border-accent transition-all text-sm font-bold text-text-dark dark:text-white">
-                                <option>15 Minutes</option>
-                                <option>30 Minutes</option>
-                                <option selected>1 Hour</option>
-                                <option>4 Hours</option>
+                            <label className="block text-[10px] font-black uppercase tracking-[0.2em] px-1 text-white/40">Auto-Logout Session</label>
+                            <select className="w-full px-8 py-5 bg-white/5 border border-white/5 rounded-2xl outline-none focus:border-accent transition-all text-sm font-black text-white appearance-none cursor-pointer">
+                                <option className="bg-ndl-dark">15 Minutes</option>
+                                <option className="bg-ndl-dark">30 Minutes</option>
+                                <option className="bg-ndl-dark" selected>1 Hour</option>
+                                <option className="bg-ndl-dark">4 Hours</option>
                             </select>
                         </div>
                     </div>
                 </div>
 
                 {/* Interface Customization */}
-                <div className={`${isDarkMode ? 'bg-gray-800/80 border-white/5' : 'bg-white border-border-color'} p-10 rounded-[3rem] shadow-xl border`}>
-                    <h3 className={`text-xl font-black mb-8 tracking-tight ${isDarkMode ? 'text-white' : 'text-ndl-dark'} flex items-center gap-3`}>
-                        <span className="opacity-50 text-base">🎨</span> Interface Customization
+                <div className="glass-panel p-12">
+                    <h3 className="text-2xl font-black mb-10 tracking-tight text-white flex items-center gap-4">
+                        <span className="opacity-30 text-2xl">🎨</span> Interface Customization
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div className="space-y-4">
-                            <label className={`block text-[10px] font-black uppercase tracking-widest px-1 ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>Portal Language</label>
+                            <label className="block text-[10px] font-black uppercase tracking-[0.2em] px-1 text-white/40">Portal Language</label>
                             <select
                                 value={currentLanguage}
                                 onChange={(e) => changeLanguage(e.target.value)}
-                                className="w-full px-6 py-4 bg-gray-50 dark:bg-black/20 border border-border-color dark:border-white/5 rounded-2xl outline-none focus:border-accent transition-all text-sm font-bold text-text-dark dark:text-white"
+                                className="w-full px-8 py-5 bg-white/5 border border-white/5 rounded-2xl outline-none focus:border-accent transition-all text-sm font-black text-white appearance-none cursor-pointer"
                             >
-                                <option value="en">English (US)</option>
-                                <option value="hi">Hindi (हिन्दी)</option>
-                                <option value="te">Telugu (తెలుగు)</option>
-                                <option value="kn">Kannada (ಕನ್ನಡ)</option>
+                                <option value="en" className="bg-ndl-dark">English (US)</option>
+                                <option value="hi" className="bg-ndl-dark">Hindi (हिन्दी)</option>
+                                <option value="te" className="bg-ndl-dark">Telugu (తెలుగు)</option>
+                                <option value="kn" className="bg-ndl-dark">Kannada (ಕನ್ನಡ)</option>
                             </select>
                         </div>
                         <div className="space-y-4">
-                            <label className={`block text-[10px] font-black uppercase tracking-widest px-1 ${isDarkMode ? 'text-gray-400' : 'text-text-gray'}`}>Accent Color</label>
-                            <div className="flex gap-3">
-                                {['#FF6D00', '#006064', '#7B1FA2', '#D32F2F', '#388E3C'].map(color => (
+                            <label className="block text-[10px] font-black uppercase tracking-[0.2em] px-1 text-white/40">System Accent Color</label>
+                            <div className="flex gap-4 p-2 bg-white/5 rounded-2xl border border-white/5 w-fit">
+                                {['#FF6D00', '#00BCD4', '#7B1FA2', '#D32F2F', '#388E3C'].map(color => (
                                     <button
                                         key={color}
                                         type="button"
                                         onClick={() => setAccentColor(color)}
-                                        className={`w-10 h-10 rounded-full border-4 transition-all hover:scale-110 active:scale-90 ${color === accentColor ? 'border-primary dark:border-white animate-pulse' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                                        className={`w-12 h-12 rounded-xl border-4 transition-all hover:scale-110 active:scale-95 ${color === accentColor ? 'border-white shadow-[0_0_20px_rgba(255,255,255,0.3)]' : 'border-transparent opacity-40 hover:opacity-100'}`}
                                         style={{ backgroundColor: color }}
                                     />
                                 ))}
@@ -408,45 +495,42 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
                 </div>
 
                 {/* Data Management */}
-                <div className={`${isDarkMode ? 'bg-gray-900/40 border-white/5' : 'bg-ndl-dark border-transparent'} p-10 rounded-[3rem] shadow-xl border text-white relative overflow-hidden group`}>
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-accent opacity-5 rounded-full blur-3xl -translate-y-32 translate-x-32 group-hover:opacity-10 transition-opacity"></div>
-                    <h3 className="text-xl font-black mb-8 tracking-tight flex items-center gap-3">
-                        <span className="opacity-50 text-base">⚙️</span> Data & System Management
+                <div className="glass-panel p-12 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-80 h-80 bg-red-500 opacity-5 rounded-full blur-[100px] -translate-y-40 translate-x-40 group-hover:opacity-10 transition-opacity"></div>
+                    <h3 className="text-2xl font-black mb-10 tracking-tight text-white flex items-center gap-4">
+                        <span className="opacity-30 text-2xl">⚙️</span> Data & Critical Systems
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
-                        <div className="space-y-4">
-                            <div className="flex items-center justify-between">
-                                <span className="text-[10px] font-black uppercase tracking-widest opacity-60">Maintenance Mode</span>
-                                <label className="relative inline-flex items-center cursor-pointer scale-90">
-                                    <input type="checkbox" className="sr-only peer" />
-                                    <div className="w-11 h-6 bg-white/10 peer-focus:outline-none dark:bg-white/5 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent/80"></div>
-                                </label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
+                        <div className="space-y-6">
+                            <div className="flex items-center justify-between p-6 bg-white/5 rounded-2xl border border-white/5">
+                                <span className="text-[10px] font-black uppercase tracking-widest text-white/60">Institutional Maintenance Mode</span>
+                                <input type="checkbox" className="custom-toggle" />
                             </div>
-                            <p className="text-xs text-white/40 leading-relaxed italic">When active, the portal will be accessible only to administrators.</p>
+                            <p className="text-xs text-white/30 leading-relaxed font-medium italic">CAUTION: Activating maintenance mode will restrict access for all non-admin users immediately.</p>
                         </div>
                         <div className="flex flex-col gap-4">
-                            <button type="button" onClick={() => alert('Starting system backup...')} className="w-full py-4 bg-white/5 hover:bg-white transform hover:text-ndl-dark transition-all rounded-2xl text-[10px] font-black uppercase tracking-widest border border-white/10 hover:scale-[1.02]">
-                                Initialize Cloud Backup
+                            <button type="button" onClick={() => alert('Starting system backup...')} className="w-full py-5 bg-white/5 hover:bg-white transform hover:text-ndl-dark transition-all rounded-2xl text-[10px] font-black uppercase tracking-widest border border-white/10 hover:shadow-2xl">
+                                Initialize Global Cloud Backup
                             </button>
-                            <button type="button" onClick={() => alert('Exporting audit logs...')} className="w-full py-4 bg-accent/20 hover:bg-accent transition-all rounded-2xl text-[10px] font-black uppercase tracking-widest border border-accent/20 hover:scale-[1.02]">
-                                Export Audit Master Logs
+                            <button type="button" onClick={() => alert('Exporting audit logs...')} className="w-full py-5 bg-accent/10 hover:bg-accent text-accent hover:text-white transition-all rounded-2xl text-[10px] font-black uppercase tracking-widest border border-accent/20 hover:shadow-2xl shadow-accent/20">
+                                Export Master Audit Logs (CSV)
                             </button>
                         </div>
                     </div>
                 </div>
 
                 {/* Form Actions */}
-                <div className="pt-10 flex flex-col sm:flex-row gap-6">
+                <div className="pt-10 flex flex-col sm:flex-row gap-8">
                     <button
                         type="submit"
-                        className="px-12 py-5 bg-primary text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-[#004d40] transition-all shadow-xl hover:-translate-y-1 active:translate-y-0"
+                        className="px-16 py-6 bg-accent text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-orange-600 transition-all shadow-2xl shadow-accent/30 hover:-translate-y-1 active:translate-y-0"
                     >
-                        Save Preferences
+                        Synchronize Preferences
                     </button>
                     <button
                         type="button"
                         onClick={() => setActiveTab('overview')}
-                        className={`px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-xs transition-all ${isDarkMode ? 'bg-white/5 text-white hover:bg-white/10' : 'bg-gray-100 text-ndl-dark hover:bg-gray-200'}`}
+                        className="px-16 py-6 rounded-2xl font-black uppercase tracking-widest text-xs transition-all bg-white/5 text-white hover:bg-white/10 border border-white/10"
                     >
                         Discard Changes
                     </button>
@@ -456,68 +540,94 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
     );
 
     return (
-        <div className={`flex flex-col w-full min-h-screen transition-colors duration-500 ${isDarkMode ? 'bg-ndl-dark' : 'bg-white'}`}>
+        <div className="admin-dashboard-container">
+            <ProfessionalBackground />
+            
             {/* Top Utility Bar */}
-            <div className={`z-[1050] flex justify-between px-[5%] py-4 text-xs font-bold tracking-widest uppercase sticky top-0 border-b backdrop-blur-md shadow-sm transition-all duration-300 ${isDarkMode ? 'bg-ndl-dark/80 text-white border-white/5' : 'bg-white/80 text-text-dark border-border-color/50'}`}>
-                <div className="flex items-center gap-8">
-                    <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate('/dashboard')}>
-                        <span className="text-xl group-hover:scale-125 transition-transform">🛡️</span>
-                        <span className="tracking-[0.3em] font-black">{t('adminConsole')}</span>
+            <div className="z-[1050] flex justify-between px-[5%] py-5 text-[10px] font-black tracking-[0.3em] uppercase sticky top-0 border-b backdrop-blur-2xl shadow-2xl border-white/5 bg-ndl-dark/40 text-white">
+                <div className="flex items-center gap-10">
+                    <div className="flex items-center gap-4 group cursor-pointer" onClick={() => navigate('/dashboard')}>
+                        <span className="text-2xl group-hover:scale-125 transition-transform duration-500">🛡️</span>
+                        <span className="font-black text-white group-hover:text-accent transition-colors">{t('adminConsole')}</span>
                     </div>
-                    <div className={`h-4 w-px hidden sm:block ${isDarkMode ? 'bg-white/10' : 'bg-border-color'}`}></div>
-                    <button
-                        onClick={toggleTheme}
-                        className="hidden sm:flex items-center gap-2 hover:text-accent transition-all active:scale-95 p-2 rounded-lg bg-gray-50/50 dark:bg-white/5"
-                    >
-                        <span className="text-lg">{isDarkMode ? '☀️' : '🌙'}</span>
-                        <span>{isDarkMode ? 'Switch to Light' : 'Switch to Dark'}</span>
-                    </button>
                 </div>
-                <div className="flex items-center gap-6">
-                    <div className={`flex items-center gap-3 px-4 py-1.5 rounded-full border group hover:border-accent transition-all ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-border-color'}`}>
-                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                        <span className={`text-[10px] opacity-80 group-hover:opacity-100 ${isDarkMode ? 'text-white' : 'text-text-dark'}`}>{username || 'Super Admin'}</span>
+                <div className="flex items-center gap-8">
+                    <div className="flex items-center gap-3 px-6 py-2 rounded-full border border-white/10 bg-white/5 group hover:border-accent transition-all">
+                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
+                        <span className="opacity-60 group-hover:opacity-100 transition-opacity">{username || 'Root Admin'}</span>
                     </div>
                     <button
                         onClick={() => navigate('/login')}
-                        className={`flex items-center gap-2 hover:text-accent transition-colors font-black ${isDarkMode ? 'text-white' : 'text-text-dark'}`}
+                        className="flex items-center gap-3 hover:text-accent transition-all font-black group"
                     >
-                        Logout 🚪
+                        Logout <span className="group-hover:translate-x-1 transition-transform">🚪</span>
                     </button>
                 </div>
             </div>
 
-            <div className="flex flex-1 overflow-hidden">
+
+            <div className="flex h-[calc(100vh-69px)] relative z-10">
                 {/* Sidebar */}
-                <aside className={`w-72 border-r hidden lg:flex flex-col p-8 space-y-2 transition-all duration-300 ${isDarkMode ? 'bg-gray-800/50 border-white/5' : 'bg-white border-border-color'}`}>
-                    <p className="text-[10px] font-black text-text-gray dark:text-gray-400 uppercase tracking-[0.3em] mb-6 px-4">Management</p>
-                    {[
-                        { id: 'overview', name: t('dashboardHome'), icon: '📊' },
-                        { id: 'resources', name: t('resourcesHub'), icon: '📂' },
-                        { id: 'users', name: t('userDirectory'), icon: '👤' },
-                        { id: 'reports', name: t('analytics'), icon: '📈' },
-                        { id: 'settings', name: t('settings'), icon: '⚙️' }
-                    ].map(item => (
-                        <button
-                            key={item.id}
-                            onClick={() => setActiveTab(item.id)}
-                            className={`flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold transition-all duration-300 ${activeTab === item.id
-                                ? 'bg-accent text-white shadow-lg shadow-accent/20 translate-x-2'
-                                : `${isDarkMode ? 'text-gray-400 hover:bg-white/5 hover:text-white' : 'text-text-gray hover:bg-gray-50 hover:text-text-dark'}`}`}
-                        >
-                            <span className={`text-xl transition-opacity ${activeTab === item.id ? 'opacity-100' : 'opacity-80 group-hover:opacity-100'}`}>{item.icon}</span>
-                            {item.name}
-                        </button>
-                    ))}
-                </aside>
+                <motion.aside
+                    initial={{ x: -100, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    className="w-96 hidden lg:flex flex-col p-10 space-y-4 bg-black/20 backdrop-blur-md border-r border-white/5 overflow-y-auto"
+                >
+                    <div className="px-4 mb-10">
+                        <p className="text-[10px] font-black text-indigo-300/40 uppercase tracking-[0.6em]">System Management</p>
+                    </div>
+                    <div className="space-y-4 flex-1">
+                        {[
+                            { id: 'overview', name: t('dashboardHome'), icon: '📊' },
+                            { id: 'resources', name: t('resourcesHub'), icon: '📂' },
+                            { id: 'users', name: t('userDirectory'), icon: '👤' },
+                            { id: 'reports', name: t('analytics'), icon: '📈' },
+                            { id: 'settings', name: t('settings'), icon: '⚙️' }
+                        ].map(item => (
+                            <motion.button
+                                key={item.id}
+                                whileHover={{ x: 10, scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => setActiveTab(item.id)}
+                                className={`w-full flex items-center gap-6 px-10 py-6 rounded-[2.5rem] text-[11px] font-black uppercase tracking-[0.2em] transition-all duration-300 border ${activeTab === item.id
+                                    ? 'bg-indigo-600/30 border-indigo-500/50 text-white shadow-[0_15px_40px_rgba(79,70,229,0.2)]'
+                                    : 'bg-white/5 border-transparent text-white/40 hover:text-white hover:bg-white/10'}`}
+                            >
+                                <span className={`text-2xl transition-all duration-500 ${activeTab === item.id ? 'scale-125 rotate-6' : 'opacity-40 grayscale group-hover:grayscale-0'}`}>{item.icon}</span>
+                                {item.name}
+                            </motion.button>
+                        ))}
+                    </div>
+
+                    {/* System Health Module */}
+                    <motion.div
+                        whileHover={{ y: -5 }}
+                        className="bg-gray-900/60 backdrop-blur-xl border border-white/5 p-8 rounded-[3rem] mt-10 shadow-3xl"
+                    >
+                        <div className="flex justify-between items-center mb-5 px-2">
+                            <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Core Integrity</span>
+                            <span className="text-[10px] font-extrabold text-white/40 tracking-tighter">94%</span>
+                        </div>
+                        <div className="h-2 bg-white/5 rounded-full overflow-hidden mb-2">
+                            <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: '94%' }}
+                                transition={{ duration: 1.5, ease: 'easeOut' }}
+                                className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]"
+                            />
+                        </div>
+                    </motion.div>
+                </motion.aside>
 
                 {/* Main Content */}
-                <main className="flex-1 overflow-y-auto p-8 md:p-12 lg:p-16">
-                    {activeTab === 'overview' && renderOverview()}
-                    {activeTab === 'resources' && renderResources()}
-                    {activeTab === 'users' && renderUsers()}
-                    {activeTab === 'reports' && renderAnalytics()}
-                    {activeTab === 'settings' && renderSettings()}
+                <main className="flex-1 overflow-y-auto p-12 lg:p-16 scroll-smooth">
+                    <div className="max-w-7xl mx-auto">
+                        {activeTab === 'overview' && renderOverview()}
+                        {activeTab === 'resources' && renderResources()}
+                        {activeTab === 'users' && renderUsers()}
+                        {activeTab === 'reports' && renderAnalytics()}
+                        {activeTab === 'settings' && renderSettings()}
+                    </div>
                 </main>
             </div>
         </div>
@@ -525,3 +635,5 @@ const AdminDashboard = ({ toggleTheme, isDarkMode, username }) => {
 };
 
 export default AdminDashboard;
+// End of Admin Dashboard Module
+

@@ -1,69 +1,67 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import ProfessionalBackground from './ProfessionalBackground';
 
-const CulturalArchives = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
+const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } };
+const itemVariants = { hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 100 } } };
+
+const CulturalArchives = ({ toggleFullScreen }) => {
     const navigate = useNavigate();
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = React.useState('');
 
     const sections = [
         {
-            title: 'Visual Arts & Museums',
-            icon: '🎨',
+            title: 'Heritage Sites',
+            icon: '🏯',
             items: [
-                'Classical Paintings', 'Modern Art Collections', 'Sculptures & Statues',
-                'Historical Artifacts', 'Photography Archives', 'Folk Art & Crafts',
-                'Textile & Weaving', 'Pottery & Ceramics', 'Digital Art Exhibits',
-                'Museum Catalogs', 'Art Restoration Logs', 'Iconography Studies'
+                'Taj Mahal (Agra)', 'Hampi (Karnataka)', 'Ajanta & Ellora',
+                'Khajuraho Temples', 'Qutub Minar (Delhi)', 'Sun Temple (Konark)',
+                'Chhatrapati Shivaji Terminus', 'Rani ki Vav', 'Red Fort',
+                'Hill Forts of Rajasthan', 'Mahabodhi Temple', 'Sanchi Stupa'
             ]
         },
         {
-            title: 'Literature & Manuscripts',
-            icon: '📜',
-            items: [
-                'Ancient Manuscripts', 'Classical Poetry', 'Historical Documents',
-                'Religious Texts', 'Regional Literature', 'Epic Narratives',
-                'Calligraphy Archives', 'Travelogues', 'Biographies & Memoirs',
-                'Scholarly Commentaries', 'Rare Books Collection', 'Folklore & Legends'
-            ]
-        },
-        {
-            title: 'Performing Arts',
+            title: 'Classical Arts',
             icon: '🎭',
             items: [
-                'Classical Music Recordings', 'Traditional Dance Forms', 'Theater & Drama Scripts',
-                'Folk Music & Songs', 'Musical Instruments Gallery', 'Documentary Films',
-                'Oral Traditions', 'Radio Archives', 'Cinema Heritage',
-                'Puppetry & Street Art', 'Costume & Mask Gallery', 'Stage Productions'
+                'Bharatanatyam (Tamil Nadu)', 'Kathak (North India)', 'Kathakali (Kerala)',
+                'Kuchipudi (Andhra)', 'Odissi (Odisha)', 'Sattriya (Assam)',
+                'Manipuri (Manipur)', 'Mohiniyattam (Kerala)', 'Hindustani Classical',
+                'Carnatic Music', 'Dhrupad Traditions', 'Classical Instruments'
             ]
         },
         {
-            title: 'Heritage Sites',
-            icon: '🏛️',
+            title: 'Literature & Scripts',
+            icon: '✍️',
             items: [
-                'Archaeological Reports', 'Virtual Heritage Tours', 'Architecture Blueprints',
-                'Monument Documentation', 'UNESCO World Heritage', 'Historical Maps',
-                'Excavation Logs', 'Urban Heritage Studies', 'Traditional Habitats',
-                'Sacred Geographies', 'Site Preservation Guides', 'Geographical Indication'
+                'Vedic Sanskrit Texts', 'Sangam Literature', 'Bhakti Poetry',
+                'Pali Canon', 'Brahmi Script', 'Grantha Script',
+                'Persian Manuscripts', 'Medieval Chronicles', 'Folk Epics',
+                'Modern Indian Literature', 'Regional Masterpieces', 'Calligraphy'
+            ]
+        },
+        {
+            title: 'Festivals & Rituals',
+            icon: '✨',
+            items: [
+                'Kumbh Mela', 'Diwali Traditions', 'Durga Puja (Kolkata)',
+                'Onam Harvest', 'Holi Celebrations', 'Eid Observances',
+                'Christmas Heritage', 'Lohri & Makar Sankranti', 'Navratri Dance',
+                'Tribal Rituals', 'Temple Festivals', 'Sacred Ceremonies'
             ]
         }
     ];
 
     return (
-        <div className="flex flex-col w-full min-h-screen bg-[#fdfbf7] dark:bg-ndl-dark transition-colors duration-500">
+        <div className="flex flex-col w-full min-h-screen bg-ndl-dark transition-colors duration-500 relative">
+            <ProfessionalBackground />
             {/* Top Utility Bar */}
-            <div className="z-[1050] bg-gradient-to-r from-[#00695c] to-[#004d40] text-white flex justify-between px-[5%] py-2.5 text-xs font-semibold tracking-wide sticky top-0 border-b border-white/5 backdrop-blur-sm shadow-lg">
+            <div className="z-[1050] bg-gradient-to-r from-[#d84315] to-[#bf360c] text-white flex justify-between px-[5%] py-2.5 text-xs font-semibold tracking-wide sticky top-0 border-b border-white/5 backdrop-blur-sm shadow-lg">
                 <div className="flex items-center gap-6">
-                    <button
-                        onClick={toggleTheme}
-                        className="flex items-center gap-2 transition-all p-1 rounded-md hover:bg-white/10 active:scale-95 group"
-                        title="Toggle theme"
-                    >
-                        <span className="text-sm group-hover:rotate-12 transition-transform">{isDarkMode ? '☀️' : '🌙'}</span>
-                        <span className="hidden sm:inline opacity-90 group-hover:opacity-100">{isDarkMode ? 'Light' : 'Dark'} Mode</span>
-                    </button>
                     <button className="flex items-center gap-2 opacity-90 hover:opacity-100 hover:text-accent transition-all group p-1">
-                        <span className="text-sm group-hover:scale-110 transition-transform">🏺</span>
-                        <span className="hidden sm:inline">Culture Explorer</span>
+                        <span className="text-sm group-hover:scale-110 transition-transform">🏛️</span>
+                        <span className="hidden sm:inline">Heritage Portal</span>
                     </button>
                 </div>
                 <div className="flex items-center gap-6">
@@ -85,59 +83,64 @@ const CulturalArchives = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
             </div>
 
             {/* Hero Header */}
-            <div className="relative pt-20 pb-12 px-[5%] text-center overflow-hidden bg-gradient-to-b from-[#e0f2f1] to-transparent dark:from-ndl-dark dark:to-transparent">
+            <motion.div 
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                className="relative pt-20 pb-12 px-[5%] text-center overflow-hidden bg-gradient-to-b from-ndl-dark to-transparent"
+            >
                 <div className="relative z-10 flex flex-col items-center">
                     {/* Themed Header Badge */}
-                    <div className={`inline-block px-14 py-4 ${isDarkMode ? 'bg-gray-800 border-white/10' : 'bg-white border-white'} shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-3xl mb-10 border animate-popIn`}>
-                        <h1 className={`text-4xl font-black tracking-tighter uppercase ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>
+                    <div className="inline-block px-14 py-4 bg-gray-800 border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.1)] rounded-3xl mb-10 border animate-popIn">
+                        <h1 className="text-4xl font-black tracking-tighter uppercase text-white">
                             Cultural <span className="text-accent underline decoration-primary/20 transition-all">Archives</span>
                         </h1>
                     </div>
 
-                    {/* Search Bar */}
+                    {/* Cultural Search Bar */}
                     <div className="w-full max-w-5xl relative group mb-12 animate-fadeInUp">
                         <div className="absolute inset-x-0 -bottom-2 h-4 bg-black/5 blur-2xl rounded-full scale-95 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <div className="relative bg-white dark:bg-gray-800 border-2 border-transparent focus-within:border-accent shadow-2xl rounded-[1.5rem] flex p-1 transition-all duration-500 overflow-hidden">
-                            <div className="px-8 flex items-center border-r border-gray-100 dark:border-white/5 bg-gray-50 dark:bg-gray-900/20">
-                                <span className="text-xs font-black uppercase tracking-widest text-[#00695c] dark:text-[#80cbc4] flex items-center gap-3">
-                                    🎭 Heritage Portal
+                        <div className="relative bg-gray-800 border-2 border-transparent focus-within:border-accent shadow-2xl rounded-[1.5rem] flex p-1 transition-all duration-500 overflow-hidden">
+                            <div className="px-8 flex items-center border-r border-white/5 bg-gray-900/20">
+                                <span className="text-xs font-black uppercase tracking-widest text-[#ffab91] flex items-center gap-3">
+                                    🏛️ Legacy
                                 </span>
                             </div>
                             <input
                                 type="text"
-                                placeholder="Search for artifacts, manuscripts, performance recordings, or heritage sites..."
+                                placeholder="Search monuments, art forms, historical texts, or festivals..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && searchTerm && navigate(`/search?q=${searchTerm}`)}
-                                className={`flex-1 bg-transparent px-8 py-5 outline-none font-semibold ${isDarkMode ? 'text-white placeholder-white/30' : 'text-text-dark placeholder-text-gray/50'} text-lg`}
+                                className="flex-1 bg-transparent px-8 py-5 outline-none font-semibold text-white placeholder-white/30 text-lg"
                             />
                             <button
                                 onClick={() => searchTerm && navigate(`/search?q=${searchTerm}`)}
-                                className="bg-[#00695c] hover:bg-[#004d40] text-white px-12 rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl active:scale-95 shadow-primary/30"
+                                className="bg-[#bf360c] hover:bg-[#a12e0a] text-white px-12 rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl active:scale-95 shadow-primary/30"
                             >
                                 Search
                             </button>
                         </div>
-                        <div className={`mt-4 flex justify-center gap-6 text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'text-gray-400' : 'text-text-gray/80'}`}>
+                        <div className="mt-4 flex justify-center gap-6 text-[10px] font-black uppercase tracking-widest text-gray-400">
                             <span
-                                onClick={() => alert('Starting Virtual Heritage Tour...')}
+                                onClick={() => alert('Accessing UNESCO World Heritage directory...')}
                                 className="cursor-pointer hover:text-accent transition-colors"
                             >
-                                Virtual Tours
+                                World Heritage Sites
                             </span>
                             <span className="w-1 h-1 bg-gray-300 rounded-full my-auto"></span>
                             <span
-                                onClick={() => alert('Accessing digital Rare Manuscripts archive...')}
+                                onClick={() => alert('Opening Classical Dance & Music theater...')}
+                                className="cursor-pointer hover:text-accent transition-colors"
+                            >
+                                Performing Arts
+                            </span>
+                            <span className="w-1 h-1 bg-gray-300 rounded-full my-auto"></span>
+                            <span
+                                onClick={() => alert('Navigating to Medieval Manuscript vault...')}
                                 className="cursor-pointer hover:text-accent transition-colors"
                             >
                                 Rare Manuscripts
-                            </span>
-                            <span className="w-1 h-1 bg-gray-300 rounded-full my-auto"></span>
-                            <span
-                                onClick={() => alert('Opening Classical Music digital library...')}
-                                className="cursor-pointer hover:text-accent transition-colors"
-                            >
-                                Classical Music
                             </span>
                         </div>
                     </div>
@@ -146,20 +149,26 @@ const CulturalArchives = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                 {/* Background Floating Elements */}
                 <div className="absolute top-10 right-[10%] w-72 h-72 bg-accent/5 rounded-full blur-[100px] animate-pulse"></div>
                 <div className="absolute top-40 left-[10%] w-60 h-60 bg-primary/5 rounded-full blur-[100px] animate-pulse delay-1000"></div>
-            </div>
+            </motion.div>
 
             {/* Main Grid */}
-            <main className="flex-1 px-[5%] pb-32">
+            <motion.main 
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="flex-1 px-[5%] pb-32 relative z-10"
+            >
                 <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
                     {sections.map((section, idx) => (
-                        <div
+                        <motion.div
                             key={idx}
-                            className="group bg-white dark:bg-gray-800/90 backdrop-blur-xl rounded-[3rem] shadow-[0_20px_60px_rgba(0,0,0,0.03)] border border-white dark:border-white/5 flex flex-col overflow-hidden animate-fadeInUp transition-all duration-700 hover:-translate-y-5 hover:shadow-[0_60px_120px_rgba(0,0,0,0.18)] hover:border-accent/50"
-                            style={{ animationDelay: `${idx * 200}ms` }}
+                            variants={itemVariants}
+                            whileHover={{ y: -10, transition: { duration: 0.2 } }}
+                            className="group bg-gray-800/95 backdrop-blur-2xl rounded-[3rem] shadow-[0_60px_120px_rgba(0,0,0,0.3)] border border-white/10 flex flex-col overflow-hidden transition-colors duration-500 hover:border-accent/50"
                         >
                             {/* Header */}
-                            <div className={`px-12 py-8 border-b ${isDarkMode ? 'border-white/5 bg-gray-900/40' : 'border-gray-100 bg-gray-50/50'} flex items-center justify-between group-hover:bg-white dark:group-hover:bg-gray-800 transition-colors duration-500`}>
-                                <h2 className={`text-2xl font-black flex items-center gap-6 tracking-tight uppercase ${isDarkMode ? 'text-white' : 'text-ndl-dark'}`}>
+                            <div className="px-12 py-8 border-b border-white/5 bg-gray-900/40 flex items-center justify-between group-hover:bg-gray-800 transition-colors duration-500">
+                                <h2 className="text-2xl font-black flex items-center gap-6 tracking-tight uppercase text-white">
                                     <span className="text-4xl transition-all duration-700 group-hover:scale-150 group-hover:rotate-[20deg] group-hover:drop-shadow-xl inline-block">
                                         {section.icon}
                                     </span>
@@ -171,18 +180,18 @@ const CulturalArchives = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                             </div>
 
                             {/* Items */}
-                            <div className="p-12 flex-1 relative overflow-hidden">
+                            <div className="px-12 py-12 flex-1 relative overflow-hidden bg-gray-800">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 relative z-10">
                                     {section.items.map((item, itemIdx) => (
                                         <div
                                             key={itemIdx}
-                                            className="group/item flex items-center justify-between text-sm text-text-gray/90 dark:text-gray-400 font-bold transition-all duration-300 hover:translate-x-2"
+                                            className="group/item flex items-center justify-between text-sm text-gray-100 font-semibold transition-all duration-300 hover:translate-x-2"
                                         >
                                             <div
                                                 className="flex items-center gap-5 cursor-pointer hover:text-accent"
                                                 onClick={() => navigate(`/view/${item}`)}
                                             >
-                                                <span className="text-xs group-hover/item:scale-125 transition-transform text-accent">📖</span>
+                                                <span className="text-xs group-hover/item:scale-125 transition-transform text-accent">🏛️</span>
                                                 <span className="truncate border-b-2 border-transparent group-hover/item:border-accent/10 pb-1">{item}</span>
                                             </div>
                                             <button
@@ -190,7 +199,7 @@ const CulturalArchives = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                                                 className="opacity-0 group-hover/item:opacity-100 transition-opacity p-1.5 hover:bg-accent/10 rounded-lg text-accent"
                                                 title="View Resource"
                                             >
-                                                📖
+                                                🏛️
                                             </button>
                                         </div>
                                     ))}
@@ -202,10 +211,10 @@ const CulturalArchives = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                             </div>
 
                             {/* Action Footer */}
-                            <div className="px-12 py-6 bg-gray-50/50 dark:bg-black/30 border-t border-gray-100 dark:border-white/5 flex justify-center group-hover:bg-accent/10 transition-colors duration-500">
+                            <div className="px-12 py-6 bg-black/30 border-t border-white/5 flex justify-center group-hover:bg-accent/10 transition-colors duration-500">
                                 <button
                                     onClick={() => navigate(`/view/${section.title}`)}
-                                    className="flex items-center gap-4 text-xs font-black uppercase tracking-[0.4em] text-[#00695c] dark:text-[#80cbc4] hover:text-[#004d40] transition-all group/btn"
+                                    className="flex items-center gap-4 text-xs font-black uppercase tracking-[0.4em] text-[#ffab91] hover:text-white transition-all group/btn"
                                 >
                                     <span className="transition-all duration-700 group-hover/btn:scale-150 group-hover/btn:rotate-[45deg]">📚</span>
                                     <span className="relative overflow-hidden inline-block group-hover:scale-105 transition-all">
@@ -214,21 +223,17 @@ const CulturalArchives = ({ toggleTheme, isDarkMode, toggleFullScreen }) => {
                                     </span>
                                 </button>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
-            </main>
+            </motion.main>
 
             {/* Footer Branding */}
-            <footer className="py-20 px-[5%] bg-white dark:bg-ndl-dark border-t border-border-color dark:border-white/10 mt-auto">
+            <footer className="py-20 px-[5%] bg-ndl-dark border-t border-white/10 mt-auto">
                 <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row justify-between items-center gap-12">
-                    <div className="flex items-center gap-16 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-1000 scale-90 sm:scale-110">
-                        <img src="https://ndl.iitkgp.ac.in/assets/images/Ministry_Of_Education.png" alt="MOE" className="h-16 shadow-none" />
-                        <div className="w-[1px] h-12 bg-gray-200 dark:bg-white/10 rounded-full"></div>
-                        <img src="https://ndl.iitkgp.ac.in/assets/images/iit-kgp.png" alt="IIT KGP" className="h-16 shadow-none" />
-                    </div>
-                    <div className="text-text-gray/50 dark:text-gray-500 text-[10px] font-black tracking-[0.4em] uppercase text-center lg:text-right">
-                        Preserving History for Generations &copy; 2026 NDLI Platform
+                    
+                    <div className="text-gray-500 text-[10px] font-black tracking-[0.4em] uppercase text-center lg:text-right">
+                        Preserving Heritage for the Digital Era &copy; 2026 NDLI Platform
                     </div>
                 </div>
             </footer>

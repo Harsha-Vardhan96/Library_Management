@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -18,12 +18,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [username, setUsername] = useState('');
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
 
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
@@ -37,81 +32,72 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-      document.body.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.body.classList.remove('dark');
-    }
-  }, [isDarkMode]);
 
   return (
     <ThemeProvider>
       <LanguageProvider>
         <Router>
-          <div className={`min-h-screen transition-colors duration-300 bg-bg-light ${isDarkMode ? 'dark' : ''}`}>
+          <div className="min-h-screen transition-colors duration-300 bg-bg-light">
             <Routes>
               <Route
                 path="/"
-                element={<Login toggleTheme={toggleTheme} isDarkMode={isDarkMode} setUsername={setUsername} />}
+                element={<Login setUsername={setUsername} />}
               />
               <Route
                 path="/login"
-                element={<Login toggleTheme={toggleTheme} isDarkMode={isDarkMode} setUsername={setUsername} />}
+                element={<Login setUsername={setUsername} />}
               />
               <Route
                 path="/signup"
-                element={<Signup toggleTheme={toggleTheme} isDarkMode={isDarkMode} setUsername={setUsername} />}
+                element={<Signup setUsername={setUsername} />}
               />
               <Route
                 path="/dashboard"
-                element={<Dashboard toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} username={username} />}
+                element={<Dashboard toggleFullScreen={toggleFullScreen} username={username} />}
               />
               <Route
                 path="/admin-dashboard"
-                element={<AdminDashboard toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} username={username} />}
+                element={<AdminDashboard toggleFullScreen={toggleFullScreen} username={username} />}
               />
               <Route
                 path="/judicial-resources"
-                element={<JudicialResources toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+                element={<JudicialResources toggleFullScreen={toggleFullScreen} />}
               />
               <Route
                 path="/school-education"
-                element={<SchoolEducation toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+                element={<SchoolEducation toggleFullScreen={toggleFullScreen} />}
               />
               <Route
                 path="/research-resources"
-                element={<ResearchResources toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+                element={<ResearchResources toggleFullScreen={toggleFullScreen} />}
               />
               <Route
                 path="/search"
-                element={<SearchResults toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+                element={<SearchResults toggleFullScreen={toggleFullScreen} />}
               />
               <Route
                 path="/patents-and-standards"
-                element={<PatentsAndStandards toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+                element={<PatentsAndStandards toggleFullScreen={toggleFullScreen} />}
               />
               <Route
                 path="/higher-education"
-                element={<HigherEducation toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+                element={<HigherEducation toggleFullScreen={toggleFullScreen} />}
               />
               <Route
                 path="/career-development"
-                element={<CareerDevelopment toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+                element={<CareerDevelopment toggleFullScreen={toggleFullScreen} />}
               />
               <Route
                 path="/cultural-archives"
-                element={<CulturalArchives toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+                element={<CulturalArchives toggleFullScreen={toggleFullScreen} />}
               />
               <Route
                 path="/newspaper-archives"
-                element={<NewspaperArchives toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+                element={<NewspaperArchives toggleFullScreen={toggleFullScreen} />}
               />
               <Route
                 path="/view/:id"
-                element={<ResourceViewer toggleTheme={toggleTheme} isDarkMode={isDarkMode} toggleFullScreen={toggleFullScreen} />}
+                element={<ResourceViewer toggleFullScreen={toggleFullScreen} />}
               />
             </Routes>
           </div>

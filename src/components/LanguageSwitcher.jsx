@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 
-const LanguageSwitcher = ({ isDark }) => {
+const LanguageSwitcher = () => {
     const { currentLanguage, changeLanguage } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -28,8 +28,7 @@ const LanguageSwitcher = ({ isDark }) => {
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className={`flex items-center gap-4 transition-all px-4 py-3 rounded-md hover:bg-white/10 active:scale-95 group font-bold ${isDark ? 'text-white' : 'text-text-dark dark:text-white'
-                    }`}
+                className="flex items-center gap-4 transition-all px-4 py-3 rounded-md hover:bg-white/10 active:scale-95 group font-bold text-white"
             >
                 <span className="text-sm group-hover:scale-110 transition-transform">文A</span>
                 <span className="hidden sm:inline">{currentLangObj?.nativeName || 'English'}</span>
@@ -37,7 +36,7 @@ const LanguageSwitcher = ({ isDark }) => {
             </button>
 
             {isOpen && (
-                <div className="absolute top-full left-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-border-color dark:border-white/10 overflow-hidden z-[1100] animate-fadeInUp">
+                <div className="absolute top-full left-0 mt-2 w-40 bg-gray-800 rounded-xl shadow-2xl border border-white/10 overflow-hidden z-[1100] animate-fadeInUp">
                     {languages.map((lang) => (
                         <button
                             key={lang.code}
@@ -50,7 +49,7 @@ const LanguageSwitcher = ({ isDark }) => {
                             }}
                             className={`w-full px-4 py-3 text-left text-sm font-bold transition-colors flex items-center justify-between group ${currentLanguage === lang.code
                                 ? 'bg-accent/10 text-accent'
-                                : 'text-text-dark dark:text-white hover:bg-gray-50 dark:hover:bg-white/5'
+                                : 'text-white hover:bg-white/5'
                                 }`}
                         >
                             <span>{lang.nativeName}</span>
