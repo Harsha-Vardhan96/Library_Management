@@ -12,6 +12,16 @@
     transition: background-color 0.6s ease;
 }
 
+.noise-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    opacity: 0.04;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+}
+
 .grid-overlay {
     position: absolute;
     inset: 0;
@@ -30,7 +40,6 @@
     border-radius: 50%;
     filter: blur(100px);
     opacity: 0.15;
-    animation: float-bg 20s infinite ease-in-out alternate;
     z-index: 0;
     transition: background 0.6s ease, opacity 0.6s ease;
 }
@@ -41,7 +50,7 @@
     width: 50vw;
     height: 50vw;
     background: #4f46e5;
-    animation-delay: 0s;
+    animation: float-bg-1 25s infinite ease-in-out;
 }
 
 .sphere-2 {
@@ -50,7 +59,7 @@
     width: 60vw;
     height: 60vw;
     background: #7c3aed;
-    animation-delay: -5s;
+    animation: float-bg-2 30s infinite ease-in-out reverse;
 }
 
 .sphere-3 {
@@ -59,39 +68,81 @@
     width: 40vw;
     height: 40vw;
     background: #0ea5e9;
-    animation-delay: -10s;
+    animation: float-bg-3 20s infinite ease-in-out;
+}
+
+.sphere-4 {
+    top: 20%;
+    right: 20%;
+    width: 45vw;
+    height: 45vw;
+    background: #db2777;
+    animation: float-bg-1 28s infinite ease-in-out reverse;
+}
+
+.sphere-5 {
+    bottom: 15%;
+    left: 15%;
+    width: 50vw;
+    height: 50vw;
+    background: #9333ea;
+    animation: float-bg-2 22s infinite ease-in-out;
 }
 
 /* ===== LIGHT MODE overrides ===== */
 html.light .professional-bg-container {
-    background-color: #fffbf5;
+    background-color: #e8e6eb; /* Softer, less bright background */
+}
+
+html.light .noise-overlay {
+    opacity: 0.02;
+    mix-blend-mode: multiply;
 }
 
 html.light .grid-overlay {
     background-image:
-        linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+        linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
 }
 
 html.light .gradient-sphere {
-    opacity: 0.22;
+    opacity: 0.35;
     filter: blur(120px);
 }
 
 html.light .sphere-1 {
-    background: #f97316; /* orange-500 */
+    background: #9333ea; /* Purple */
 }
 
 html.light .sphere-2 {
-    background: #a855f7; /* purple-500 */
+    background: #e11d48; /* Red/Rose */
 }
 
 html.light .sphere-3 {
-    background: #06b6d4; /* cyan-500 */
+    background: #7c3aed; /* Violet */
 }
 
-@keyframes float-bg {
-    0%   { transform: translate(0, 0) scale(1); }
-    50%  { transform: translate(5%, 10%) scale(1.1); }
-    100% { transform: translate(-5%, -5%) scale(0.9); }
+html.light .sphere-4 {
+    background: #8b5cf6; /* Light Violet */
+}
+
+html.light .sphere-5 {
+    background: #d946ef; /* Fuchsia */
+}
+
+@keyframes float-bg-1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%      { transform: translate(4%, 8%) scale(1.05); }
+    66%      { transform: translate(-6%, 3%) scale(0.95); }
+}
+
+@keyframes float-bg-2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%      { transform: translate(-8%, -4%) scale(1.08); }
+    66%      { transform: translate(5%, -10%) scale(0.92); }
+}
+
+@keyframes float-bg-3 {
+    0%, 100% { transform: translate(0, 0) scale(1.02); }
+    50%      { transform: translate(7%, 6%) scale(0.96); }
 }

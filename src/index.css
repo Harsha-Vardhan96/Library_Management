@@ -120,4 +120,14 @@ html.light {
 }
 
 @media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* Ensure bottom space for iOS home indicators / Android gesture bars */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }

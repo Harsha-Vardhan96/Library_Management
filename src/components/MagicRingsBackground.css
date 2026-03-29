@@ -48,12 +48,12 @@
 
 .ring-wrapper-left {
   left: -2%;
-  animation: magicFloatLeft 8s infinite ease-in-out alternate;
+  animation: magicFloatLeft 8s infinite ease-in-out alternate, colorCycle 20s infinite linear;
 }
 
 .ring-wrapper-right {
   right: -2%;
-  animation: magicFloatRight 10s infinite ease-in-out alternate;
+  animation: magicFloatRight 10s infinite ease-in-out alternate, colorCycle 25s infinite linear reverse;
 }
 
 .magic-ring {
@@ -131,6 +131,12 @@
 @keyframes magicFloatRight {
   0%   { transform: translateY(-50%) rotate(2deg); }
   100% { transform: translateY(-50%) rotate(-2deg); }
+}
+
+@keyframes colorCycle {
+  0%   { filter: hue-rotate(0deg); }
+  50%  { filter: hue-rotate(180deg); }
+  100% { filter: hue-rotate(360deg); }
 }
 
 /* ===== LIGHT MODE — warm coral / cyan / indigo rings on cream ===== */

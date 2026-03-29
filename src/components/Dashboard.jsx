@@ -81,46 +81,46 @@ const Dashboard = ({ toggleFullScreen, username }) => {
     <div className={`flex flex-col w-full min-h-screen transition-colors duration-500 overflow-x-hidden relative ${isDark ? '' : 'bg-[#fffbf5]'}`}>
       <MagicRingsBackground />
       {/* Top Utility Bar */}
-      <div className={`z-[1050] flex justify-between px-[5%] py-2.5 text-xs font-semibold tracking-wide sticky top-0 border-b backdrop-blur-sm transition-colors duration-500 ${isDark ? 'bg-gradient-to-r from-primary to-[#003f42] text-white border-primary/20' : 'bg-white/80 text-gray-800 border-gray-200 shadow-sm'}`}>
-        <div className="flex items-center gap-6">
+      <div className={`z-[1050] flex flex-wrap justify-between items-center gap-2 px-2 sm:px-[5%] py-2 sm:py-2.5 text-[10px] sm:text-xs font-semibold tracking-wide sticky top-0 border-b backdrop-blur-sm transition-colors duration-500 ${isDark ? 'bg-gradient-to-r from-primary to-[#003f42] text-white border-primary/20' : 'bg-white/80 text-gray-800 border-gray-200 shadow-sm'}`}>
+        <div className="flex items-center gap-3 sm:gap-6">
           <LanguageSwitcher />
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 sm:gap-6">
           <ThemeToggle />
-          <Link to="/login" className="flex items-center gap-2 opacity-90 hover:opacity-100 hover:text-accent transition-all group p-1">
+          <Link to="/login" className="flex items-center gap-1.5 sm:gap-2 opacity-90 hover:opacity-100 hover:text-accent transition-all group p-1">
             <span className="text-sm group-hover:-translate-y-px transition-transform">👤</span>
             <span className="hidden sm:inline">{username || t('login')}</span>
           </Link>
           <button
             onClick={toggleFullScreen}
-            className="flex items-center gap-2 opacity-90 hover:opacity-100 hover:text-accent transition-all group p-1"
+            className="flex items-center gap-1.5 sm:gap-2 opacity-90 hover:opacity-100 hover:text-accent transition-all group p-1"
           >
             <span className="text-sm group-hover:scale-110 transition-transform">⛶</span>
-            <span className="hidden sm:inline">View Fullscreen</span>
+            <span className="hidden md:inline">View Fullscreen</span>
           </button>
         </div>
       </div>
 
       {/* Modern Scrolling Header */}
-      <header className="z-[1000] sticky top-10 flex justify-center items-center py-5 px-[5%] bg-ndl-dark/80 backdrop-blur-xl border-b border-white/5 shadow-sm transition-all duration-300">
-        <nav className="flex items-center gap-4 md:gap-12 px-8 py-3 bg-gray-800/90 border border-white/10 shadow-sm rounded-full transition-all hover:shadow-md">
+      <header className="z-[1000] sticky top-0 sm:top-10 flex justify-center items-center py-3 sm:py-5 px-4 sm:px-[5%] bg-purple-700/80 backdrop-blur-xl border-b border-purple-400/20 shadow-sm transition-all duration-300">
+        <nav className="flex items-center justify-between w-full max-w-fit gap-2 sm:gap-4 md:gap-12 px-5 sm:px-8 py-2.5 sm:py-3 bg-black border border-white/10 shadow-lg shadow-black/50 rounded-full transition-all hover:shadow-black/70 overflow-x-auto no-scrollbar">
           <button
             onClick={scrollToExplore}
-            className="text-sm font-black tracking-widest uppercase cursor-pointer text-white hover:text-accent transition-colors"
+            className="text-[10px] sm:text-xs md:text-sm font-black tracking-widest uppercase cursor-pointer text-white hover:text-accent transition-colors whitespace-nowrap"
           >
             {t('explore')}
           </button>
-          <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"></span>
+          <span className="min-w-[4px] w-1 h-1 sm:w-1.5 sm:h-1.5 bg-accent rounded-full animate-pulse"></span>
           <button
             onClick={() => navigate('/judicial-resources')}
-            className="text-sm font-black tracking-widest uppercase cursor-pointer text-white hover:text-accent transition-colors"
+            className="text-[10px] sm:text-xs md:text-sm font-black tracking-widest uppercase cursor-pointer text-white hover:text-accent transition-colors whitespace-nowrap"
           >
             {t('resources')}
           </button>
-          <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse delay-75"></span>
+          <span className="min-w-[4px] w-1 h-1 sm:w-1.5 sm:h-1.5 bg-accent rounded-full animate-pulse delay-75"></span>
           <button
             onClick={() => navigate('/school-education')}
-            className="text-sm font-black tracking-widest uppercase cursor-pointer text-white hover:text-accent transition-colors"
+            className="text-[10px] sm:text-xs md:text-sm font-black tracking-widest uppercase cursor-pointer text-white hover:text-accent transition-colors whitespace-nowrap"
           >
             {t('courses')}
           </button>
@@ -132,30 +132,30 @@ const Dashboard = ({ toggleFullScreen, username }) => {
       <section className="relative flex flex-col items-center justify-center min-h-[600px] px-[5%] py-20 text-center">
 
         <div className="relative z-10 w-full max-w-5xl">
-          <h1 className={`mb-6 text-5xl font-black leading-tight tracking-tighter md:text-8xl animate-fadeInDown drop-shadow-sm transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            {t('heroTitlePrimary')} <span className="text-accent underline decoration-primary/20 transition-all hover:decoration-accent/40">{t('heroTitleSecondary')}</span>
+          <h1 className={`mb-4 sm:mb-6 text-4xl sm:text-6xl md:text-8xl font-black leading-tight tracking-tighter animate-fadeInDown drop-shadow-sm transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            {t('heroTitlePrimary')} <br className="sm:hidden" /> <span className="text-accent underline decoration-primary/20 transition-all hover:decoration-accent/40">{t('heroTitleSecondary')}</span>
           </h1>
-          <p className={`max-w-2xl mx-auto mb-12 text-lg md:text-2xl font-medium animate-fadeInUp leading-relaxed transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p className={`max-w-2xl mx-auto mb-8 sm:mb-12 text-base sm:text-lg md:text-2xl font-medium animate-fadeInUp leading-relaxed transition-colors duration-500 px-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
             {t('heroSubtitle')}
           </p>
 
           <div className="relative flex flex-col md:flex-row items-stretch w-full max-w-4xl mx-auto bg-white/5 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] rounded-2xl animate-popIn border border-white/20 group ring-0 focus-within:ring-4 ring-accent/30 transition-all duration-500 hover:shadow-[0_0_40px_rgba(255,109,0,0.15)] overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-accent/0 via-accent/5 to-accent/0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none"></div>
             <div className="relative flex-1 flex items-center">
-              <span className="absolute left-6 text-2xl opacity-40 group-focus-within:opacity-100 group-focus-within:text-accent transition-all duration-300">🔍</span>
+              <span className="absolute left-6 text-xl sm:text-2xl opacity-40 group-focus-within:opacity-100 group-focus-within:text-accent transition-all duration-300">🔍</span>
               <input
                 type="text"
                 placeholder={placeholder || t('searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && searchTerm && navigate(`/search?q=${searchTerm}`)}
-                className="w-full px-16 py-6 text-xl outline-none bg-transparent text-white placeholder-white/40 font-semibold"
+                className="w-full px-14 sm:px-16 py-4 sm:py-6 text-lg sm:text-xl outline-none bg-transparent text-white placeholder-white/40 font-semibold truncate"
               />
             </div>
             <button
               type="button"
               onClick={() => searchTerm && navigate(`/search?q=${searchTerm}`)}
-              className="relative px-12 py-6 font-black tracking-widest uppercase text-white transition-all bg-accent hover:bg-orange-500 hover:scale-105 active:scale-95 shadow-xl shadow-accent/30 z-10"
+              className="relative px-8 sm:px-12 py-4 sm:py-6 font-black tracking-widest uppercase text-white transition-all bg-accent hover:bg-orange-500 hover:scale-105 active:scale-95 shadow-xl shadow-accent/30 z-10"
             >
               {t('searchButton')}
             </button>

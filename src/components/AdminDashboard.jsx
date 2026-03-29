@@ -67,20 +67,20 @@ const AdminDashboard = ({ username }) => {
             className="max-w-7xl mx-auto space-y-12"
         >
             {/* Header */}
-            <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 relative z-20">
+            <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-12 relative z-20">
                 <div className="animate-fadeIn">
-                    <h2 className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.6em] mb-4 drop-shadow-sm">Command Matrix</h2>
-                    <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white leading-none">
-                        Welcome, <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 italic">{username || 'Root Admin'}</span>
+                    <h2 className="text-[9px] md:text-[10px] font-black text-indigo-400 uppercase tracking-[0.4em] md:tracking-[0.6em] mb-3 md:mb-4 drop-shadow-sm">Command Matrix</h2>
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter text-white leading-none">
+                        Welcome,<br className="sm:hidden" /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 italic">{username || 'Root Admin'}</span>
                     </h1>
                 </div>
                 <motion.button
                     whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(99, 102, 241, 0.4)' }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setActiveTab('resources')}
-                    className="px-10 py-6 bg-indigo-600 hover:bg-indigo-500 text-white rounded-[2rem] font-black uppercase tracking-widest text-xs transition-all shadow-[0_20px_50px_rgba(79,70,229,0.3)] flex items-center gap-4"
+                    className="w-full md:w-auto mt-4 md:mt-0 px-6 py-4 md:px-10 md:py-6 bg-indigo-600 hover:bg-indigo-500 text-white rounded-[2rem] md:rounded-[2.5rem] font-black uppercase tracking-widest text-[10px] md:text-xs transition-all shadow-[0_15px_30px_rgba(79,70,229,0.3)] flex items-center justify-center gap-3 md:gap-4"
                 >
-                    <span className="text-xl">➕</span> New Asset
+                    <span className="text-lg md:text-xl">➕</span> New Asset
                 </motion.button>
             </motion.div>
 
@@ -620,7 +620,7 @@ const AdminDashboard = ({ username }) => {
                 </motion.aside>
 
                 {/* Main Content */}
-                <main className="flex-1 overflow-y-auto p-12 lg:p-16 scroll-smooth">
+                <main className="flex-1 overflow-y-auto p-6 md:p-12 lg:p-16 pb-32 lg:pb-16 scroll-smooth">
                     <div className="max-w-7xl mx-auto">
                         {activeTab === 'overview' && renderOverview()}
                         {activeTab === 'resources' && renderResources()}
@@ -630,6 +630,30 @@ const AdminDashboard = ({ username }) => {
                     </div>
                 </main>
             </div>
+
+            {/* Mobile Bottom Navigation */}
+            <nav className="fixed bottom-0 left-0 w-full bg-black/85 backdrop-blur-2xl border-t border-white/10 lg:hidden flex justify-around items-center px-2 py-3 z-[2000] shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+                {[
+                    { id: 'overview', name: 'Home', icon: '📊' },
+                    { id: 'resources', name: 'Files', icon: '📂' },
+                    { id: 'users', name: 'Users', icon: '👤' },
+                    { id: 'reports', name: 'Data', icon: '📈' },
+                    { id: 'settings', name: 'Prefs', icon: '⚙️' }
+                ].map((item) => (
+                    <button
+                        key={item.id}
+                        onClick={() => setActiveTab(item.id)}
+                        className={`flex flex-col items-center gap-1 min-w-[60px] p-2 transition-all duration-300 rounded-xl ${
+                            activeTab === item.id 
+                                ? 'text-indigo-400 scale-110 drop-shadow-[0_0_10px_rgba(99,102,241,0.5)] bg-indigo-500/10' 
+                                : 'text-white/40 hover:text-white/80 hover:bg-white/5'
+                        }`}
+                    >
+                        <span className="text-xl sm:text-2xl">{item.icon}</span>
+                        <span className="text-[9px] font-black uppercase tracking-widest">{item.name}</span>
+                    </button>
+                ))}
+            </nav>
         </div>
     );
 };
